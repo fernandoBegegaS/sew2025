@@ -1,0 +1,29 @@
+main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    justify-items: center;
+    align-items: start;
+}
+
+main > h2 {
+    grid-column: 1 / -1;
+    justify-self: center;
+}
+
+main > article {
+    width: 100%;
+}
+
+/* Especificidad: 0,0,2 */
+main h2 + p {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* Móvil: 2 columnas x 6 filas */
+@media (max-width: 600px) {
+    main {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+
+<html lang="es">
+<head>
+    <!-- Datos que describen el documento -->
+    <meta charset="UTF-8" />
+    <title>MotoGP-Circuito</title>
+    <meta name ="author" content ="Fernando Begega Suarez"/>
+    <meta name ="description" content ="Página con información acerca de los circuitos" />
+    <meta name ="keywords" content ="" />
+    <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="multimedia/imagenes/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="estilo/estilo.css">
+    <link rel="stylesheet" type="text/css" href="estilo/layout.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+</head>
+
+<body>
+    <!-- Datos con el contenidos que aparece en el navegador -->
+    
+<header>
+    <h1> <a href="index.html">MotoGP Desktop</a></h1>
+    <nav>
+		<a href="index.html" title="Inicio">Inicio</a>
+		<a href="piloto.html" title="Información piloto">Piloto</a>
+        <a href="circuito.html" title="Información circuito"  class="active">Circuito</a>
+		<a href="meteorologia.html" title="Información meteorología">Meteorología</a>
+        <a href="php/clasificaciones.php" title="Información clasificaiones">Clasificaciones</a>
+		<a href="juegos.html" title="Información juegos">Juegos</a>
+        <a href="ayuda.html" title="Ayuda">Ayuda</a>
+	</nav>
+</header>
+    <p><a href="index.html">Inicio</a> >> Circuito</p>
+    <main>
+        <section>
+            <h2>Carga de archivos del circuito</h2>
+    
+            <p>
+                Info del circuito (infoCircuito.html):
+                <input type="file">
+            </p>
+    
+            <p>
+                Circuito en KML (circuito.kml):
+                <input type="file">
+            </p>
+    
+            <p>
+                Altimetría en SVG (altimetria.svg):
+                <input type="file">
+            </p>
+        </section>
+    </main>
+    
+    <script src="js/circuito.js"></script>
+  
+</body>
+</html>

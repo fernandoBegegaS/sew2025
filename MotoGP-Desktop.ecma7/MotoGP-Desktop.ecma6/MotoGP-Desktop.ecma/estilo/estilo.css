@@ -1,0 +1,100 @@
+/* UO295286 - Fernando Begega Suárez */
+/* Estilos generales del proyecto MotoGP-Desktop*/
+
+/* Especificidad: 0,0,0,1 */
+body {
+    font-family: "Arial", "Arial Narrow", "Arial Rounded MT Bold", "Century Gothic", "Calibri", sans-serif;
+    background-color: #dadada;
+    color: #000000;
+}
+
+header {
+    background-color: #B30000;
+    color: #ffffff;
+    width: 100%;
+    padding: 0.3125rem;
+    box-sizing: border-box;
+}
+
+section {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    background-color: #f0f0f0;
+    border-left: 0.25rem solid #B30000;
+}
+
+/* Título de cada bloque ("Inicio", "Piloto", etc.) */
+h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+/* Especificidad: 0,0,0,2 */
+header a {
+    color: #ffffff; /* Verificado: herencia de color comprobada y no causa efectos laterales */
+    text-decoration: none;
+}
+
+/* Especificidad: 0,0,1,2 */
+header a:hover {
+    color: #ffffff; /* Verificado: herencia de color comprobada y no causa efectos laterales */
+}
+
+/* Especificidad: 0,0,1,2 */
+nav a:hover, nav a:focus {
+    text-decoration: underline;
+}
+
+/* Especificidad: 0,0,1,1 */
+a.active {
+    font-weight: 900;
+}
+
+/* Especificidad: 0,0,0,3 */
+body > header + p {
+    font-size: 0.75rem;  
+}
+
+main > section > article {
+    margin: 1rem auto;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+main > section > article h3 {
+    margin-bottom: 0.5rem;
+    color: #B30000;
+}
+
+main > section > article a {
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+body > main > p:first-of-type + section > p {
+    margin: 0.5rem 0;
+    padding: 0.4rem 0.6rem;
+    font-size: 1rem;
+    background-color: #ffffff;
+    border: 0.1rem solid #000000;
+    width: 50%;
+}
+
+/* Input de tipo file ligeramente más cómodo */
+body > main > section:first-of-type > p > input[type="file"] {
+    margin-left: 0.5rem;
+    font-size: 0.95rem;
+}
+
+body > main > section:first-of-type > article > h2 + div {
+    height: 30rem;           /* ajusta esta altura a tu gusto */
+    overflow: hidden;        /* nada del mapa se “sale” hacia abajo */
+}
+
+@media (max-width: 768px) {
+    article h2 + img {
+        width: 100%;        
+        max-width: 100%;     
+    }
+}

@@ -1,0 +1,71 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+header nav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+header nav a {
+  padding: .25rem .5rem;
+}
+
+
+main > h2 ~ section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+main > h2 ~ section > h3 {
+  flex: 1 1 100%;
+}
+
+main > h2 ~ section > article {
+  flex: 1 1 14rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* El primer artículo de cada sección ocupa toda la fila (Sol, por ejemplo) */
+main > h2 ~ section > article:first-of-type {
+  flex-basis: 100%;
+}
+
+@media (min-width: 200px) and (max-width: 550px) {
+  header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: .5rem;
+  }
+
+  header nav {
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  header nav a {
+    width: 100%;
+    padding: .5rem .75rem;
+  }
+
+  body > header + p {
+    display: none;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+  }
+
+  audio {
+    width: 100%;
+  }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>Circuito</name>
+    <Style id="linea">
+        <LineStyle><color>ff0000ff</color><width>5</width></LineStyle>
+    </Style>
+    <Style id="punto">
+        <IconStyle><scale>1.1</scale></IconStyle>
+    </Style>
+    <Placemark>
+        <name>Origen</name>
+        <styleUrl>#punto</styleUrl>
+        <Point>
+            <altitudeMode>clampToGround</altitudeMode>
+            <coordinates>-97.639860,30.131938</coordinates>
+        </Point>
+    </Placemark>
+    <Placemark>
+        <name>Trazado</name>
+        <styleUrl>#linea</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <altitudeMode>clampToGround</altitudeMode>
+            <coordinates>
+                -97.639860,30.131938 -97.639860,30.131938 -97.636767,30.130201 -97.637348,30.131847 -97.637080,30.132514 -97.635067,30.133655 -97.634666,30.134411 -97.633900,30.134724 -97.633437,30.135864 -97.632503,30.136225 -97.631121,30.135721 -97.629846,30.136671 -97.629347,30.136519 -97.629044,30.136152 -97.627016,30.136561 -97.624468,30.139238 -97.624583,30.139477 -97.628549,30.138461 -97.631374,30.137942 -97.636622,30.137354 -97.635408,30.135704 -97.635651,30.135484 -97.636443,30.135592 -97.636766,30.136246 -97.637172,30.136587 -97.637771,30.136561 -97.637473,30.135872 -97.636744,30.134812 -97.637064,30.134005 -97.638021,30.133655 -97.639124,30.133857 -97.640576,30.135517 -97.643507,30.134571 -97.643261,30.134209 -97.639860,30.131938
+            </coordinates>
+        </LineString>
+    </Placemark>
+</Document>
+</kml>
