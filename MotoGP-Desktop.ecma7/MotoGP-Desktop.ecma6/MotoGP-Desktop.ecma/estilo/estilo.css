@@ -122,7 +122,7 @@ main > ul > li > a:visited {
 /* Hover y foco (teclado): alto contraste (blanco sobre rojo oscuro) */
 main > ul > li > a:hover,
 main > ul > li > a:focus {
-    background-color: #B30000;      /* rojo oscuro */
+    background-color: #000000;      /* rojo oscuro */
     color: #ffffff;                 /* texto blanco → contraste ~7.2:1 */
     outline: 0.125rem solid #000000;   /* foco muy visible */
     outline-offset: 0.125rem;
