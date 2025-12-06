@@ -29,7 +29,7 @@ main > h2 ~ section > h3 {
 main > h2 ~ section > article {
   flex: 1 1 14rem;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
+  border: 0.0625rem solid #ccc;
   background-color: #fff;
 }
 

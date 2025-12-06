@@ -32,6 +32,10 @@ h3 {
 /* Especificidad: 0,0,0,2 */
 header a {
     color: #ffffff; /* Verificado: herencia de color comprobada y no causa efectos laterales */
+    
+}
+
+a {
     text-decoration: none;
 }
 
@@ -58,7 +62,7 @@ body > header + p {
 main > section > article {
     margin: 1rem auto;
     padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
+    border: 0.0625rem solid #ccc;
     background-color: #fff;
 }
 
@@ -91,6 +95,43 @@ body > main > section:first-of-type > article > h2 + div {
     height: 30rem;           /* ajusta esta altura a tu gusto */
     overflow: hidden;        /* nada del mapa se “sale” hacia abajo */
 }
+
+main > ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 1rem 0;
+}
+
+/* Espaciado entre elementos de la lista */
+/* especificidad: 0,0,0,3 */
+main > ul > li + li {
+    margin-top: 0.5rem;
+}
+
+/* Estilo base de los enlaces como bloques */
+/* especificidad: 0,0,0,4 */
+main > ul > li > a:link,
+main > ul > li > a:visited {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    background-color: #ffffff;
+    border: 0.1rem solid #B30000;
+    border-radius: 0.25rem;
+    color: #000000;
+    text-decoration: none;
+}
+
+/* Efecto al pasar el ratón o al tener el foco (teclado) */
+/* especificidad: 0,0,0,5 */
+main > ul > li > a:hover,
+main > ul > li > a:focus {
+    background-color: #B30000;
+    color: #ffffff;
+}
+
+
+
+
 
 @media (max-width: 768px) {
     article h2 + img {
