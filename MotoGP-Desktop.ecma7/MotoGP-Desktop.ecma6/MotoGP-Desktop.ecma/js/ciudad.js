@@ -1,33 +1,38 @@
 
 class Ciudad {
+  #nombre;
+  #pais;
+  #gentilicio;
+  #poblacion;
+  #coordenadas;
   constructor(nombre, pais, gentilicio) {
-    this.nombre = nombre;
-    this.pais = pais;
-    this.gentilicio = gentilicio;
-    this.poblacion = null;
-    this.coordenadas = null;
+    this.#nombre = nombre;
+    this.#pais = pais;
+    this.#gentilicio = gentilicio;
+    this.#poblacion = null;
+    this.#coordenadas = null;
   }
 
   rellenar(poblacion, coordenadas) {
-    this.poblacion = poblacion;
-    this.coordenadas = coordenadas;
+    this.#poblacion = poblacion;
+    this.#coordenadas = coordenadas;
   }
   
 getNombre() {
   const destino = document.querySelector("main");
-  destino.insertAdjacentHTML("beforeend", "<p>" + this.nombre + "</p>");
+  destino.insertAdjacentHTML("beforeend", "<p>" + this.#nombre + "</p>");
 }
 
 getPais() {
   const destino = document.querySelector("main");
-  destino.insertAdjacentHTML("beforeend", "<p>" + this.pais + "</p>");
+  destino.insertAdjacentHTML("beforeend", "<p>" + this.#pais + "</p>");
 }
 
 getInformacionSecundaria() {
   const destino = document.querySelector("main");
   let string = "<ul>";
-  string += "<li>" + this.gentilicio + "</li>";
-  string += "<li>" + this.poblacion + "</li>";
+  string += "<li>" + this.#gentilicio + "</li>";
+  string += "<li>" + this.#poblacion + " ciudadanos </li>";
   string += "</ul>";
   destino.insertAdjacentHTML("beforeend", string);
 }
@@ -35,7 +40,7 @@ getInformacionSecundaria() {
 escribirCoordenadas() {
   const destino = document.querySelector("main");
   const p = document.createElement("p");
-  p.textContent = "Coordenadas: " + this.coordenadas;
+  p.textContent = "coordenadas: " + this.#coordenadas;
   destino.appendChild(p);
 }
 
@@ -65,14 +70,18 @@ escribirCoordenadas() {
         this.volcarCarrera();
       }.bind(this),
       error: function () {
-        var destino = document.querySelector("main") ;
-        var sec = document.createElement("section");
-        sec.insertAdjacentHTML("afterbegin", "<h3>Meteorología — día de la carrera</h3>");
-        sec.insertAdjacentHTML(
-          "beforeend",
-          "<p>No se pudo obtener la información de Open-Meteo.</p>"
-        );
-        destino.appendChild(sec);
+        const $destino = $("main");
+        const $sec = $("<section></section>");
+
+        $("<h3></h3>")
+        .text("Meteorología — día de la carrera")
+        .appendTo($sec);
+
+        $("<p></p>")
+        .text("No se pudo obtener la información de Open-Meteo.")
+        .appendTo($sec);
+
+        $destino.append($sec);
       }
     });
   }
@@ -167,10 +176,11 @@ procesarJSONCarrera(json) {
         this.volcarMediasEntrenos();
       }.bind(this)
     ).fail(function () {
-      (document.querySelector("main")).insertAdjacentHTML(
-        "beforeend",
-        "<p>No se pudo obtener la información de Open-Meteo para entrenos.</p>"
-      );
+      $("main").append(
+    $("<p></p>").text(
+      "No se pudo obtener la información de Open-Meteo para entrenos."
+    )
+    );
     });
   }
 

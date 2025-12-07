@@ -123,7 +123,7 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
 <body>
     <!-- Datos con el contenido que aparece en el navegador -->
     <header>
-        <h1><a href="index.html">MotoGP Desktop</a></h1>
+        <h1><a href="../index.html">MotoGP Desktop</a></h1>
         <nav>
             <a href="../index.html" title="Inicio">Inicio</a>
             <a href="../piloto.html" title="Información piloto">Piloto</a>
@@ -135,7 +135,7 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
         </nav>
     </header>
 
-    <p><a href="../index.html">Inicio</a> &gt;&gt; Clasificaciones</p>
+    <p><a href="../index.html">Inicio</a> >> <strong>Clasificaciones</strong></p>
     <h2>Clasificaciones MotoGP-Desktop</h2>
 
     <?php if ($ganador !== null) { ?>

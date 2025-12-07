@@ -18,7 +18,7 @@ require 'cronometro_logica.php';
 </head>
 <body>
     <header>
-        <h1> <a href="index.html">MotoGP Desktop</a></h1>
+        <h1> <a href="../index.html">MotoGP Desktop</a></h1>
     <nav>
 		<a href="../index.html" title="Inicio">Inicio</a>
 		<a href="../piloto.html" title="Información piloto">Piloto</a>
@@ -29,7 +29,7 @@ require 'cronometro_logica.php';
         <a href="../ayuda.html" title="Ayuda">Ayuda</a>
 	</nav>
     </header>
-    <p><a href="../index.html">Inicio</a> >> <a href="juegos.html">Juegos</a> >> Cronometro php</p>
+    <p><a href="../index.html">Inicio</a> >> <a href="../juegos.html">Juegos</a> >> <strong>Cronometro php</strong></p>
     <h2>Cronómetro</h2>
     <form method="post" action="">
         <button type="submit" name="accion" value="arrancar">Arrancar</button>

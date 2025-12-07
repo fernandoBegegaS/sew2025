@@ -6,6 +6,7 @@ body {
     font-family: "Arial", "Arial Narrow", "Arial Rounded MT Bold", "Century Gothic", "Calibri", sans-serif;
     background-color: #dadada;
     color: #000000;
+    font-size: 1.1rem; 
 }
 
 header {
@@ -14,6 +15,10 @@ header {
     width: 100%;
     padding: 0.3125rem;
     box-sizing: border-box;
+}
+
+a:visited {
+  color: #000000;
 }
 
 section {
@@ -32,12 +37,15 @@ h3 {
 /* Especificidad: 0,0,0,2 */
 header a {
     color: #ffffff; /* Verificado: herencia de color comprobada y no causa efectos laterales */
+    text-decoration: none;
+
     
 }
 
-a {
-    text-decoration: none;
+header a:visited {
+    color: #ffffff; 
 }
+
 
 /* Especificidad: 0,0,1,2 */
 header a:hover {
@@ -52,11 +60,12 @@ nav a:hover, nav a:focus {
 /* Especificidad: 0,0,1,1 */
 a.active {
     font-weight: 900;
+    text-decoration: underline;
 }
 
 /* Especificidad: 0,0,0,3 */
 body > header + p {
-    font-size: 0.75rem;  
+    font-size: 0.90rem;  
 }
 
 main > section > article {
@@ -77,24 +86,30 @@ main > section > article a {
 }
 
 body > main > p:first-of-type + section > p {
-    margin: 0.5rem 0;
+    margin: 0.5rem auto;          /* centra el bloque */
     padding: 0.4rem 0.6rem;
     font-size: 1rem;
     background-color: #ffffff;
     border: 0.1rem solid #000000;
-    width: 50%;
+    width: 90%;                   /* ANTES 50% → ahora casi todo el ancho */
+    box-sizing: border-box;
 }
 
-/* Input de tipo file ligeramente más cómodo */
+/* Etiqueta y campo de archivo, cada uno en su línea */
+body > main > section:first-of-type > p > label,
 body > main > section:first-of-type > p > input[type="file"] {
-    margin-left: 0.5rem;
-    font-size: 0.95rem;
+    display: block;
 }
 
-body > main > section:first-of-type > article > h2 + div {
-    height: 30rem;           /* ajusta esta altura a tu gusto */
-    overflow: hidden;        /* nada del mapa se “sale” hacia abajo */
+/* El input ocupa todo el ancho disponible */
+body > main > section:first-of-type > p > input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+    box-sizing: border-box;
 }
+
 
 main > ul {
     list-style: none;

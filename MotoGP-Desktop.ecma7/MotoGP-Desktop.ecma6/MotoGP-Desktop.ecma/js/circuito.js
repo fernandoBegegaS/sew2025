@@ -33,12 +33,13 @@ function añadirListners(circuito, cargadorKML, cargadorSVG) {
 }
 
 class Circuito {
+    #articuloHTML;
     constructor() {
-        this.articuloHTML = null; // último <article> del HTML
-        this.comprobarApiFile();
+        this.#articuloHTML = null; // último <article> del HTML
+        this.#comprobarApiFile();
     }
 
-    comprobarApiFile() {
+    #comprobarApiFile() {
         const soportaFile = !!(window.File && window.FileReader && window.FileList && window.Blob);
         const destino = document.querySelector("main") || document.body;
         const p = document.createElement("p");
@@ -59,7 +60,7 @@ class Circuito {
             const lector = new FileReader();
             lector.onload = (e) => {
                 const contenido = e.target.result;
-                this.mostrarHTML(contenido, input);
+                this.#mostrarHTML(contenido, input);
             };
             lector.readAsText(archivo);
         } else {
@@ -67,12 +68,12 @@ class Circuito {
         }
     }
 
-    mostrarHTML(contenidoHTML, input) {
+    #mostrarHTML(contenidoHTML, input) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(contenidoHTML, "text/html");
 
-        if (this.articuloHTML) {
-            this.articuloHTML.remove();
+        if (this.#articuloHTML) {
+            this.#articuloHTML.remove();
         }
 
         const article = document.createElement("article");
@@ -92,13 +93,14 @@ class Circuito {
         }
         contenedor.after(article);
 
-        this.articuloHTML = article;
+        this.#articuloHTML = article;
     }
 }
 
 class CargadorSVG {
+    #articuloSVG;
     constructor() {
-        this.articuloSVG = null; // último <article> de SVG
+        this.#articuloSVG = null; // último <article> de SVG
     }
 
     leerArchivoSVG(files, input) {
@@ -110,7 +112,7 @@ class CargadorSVG {
             const lector = new FileReader();
             lector.onload = (e) => {
                 const contenidoSvg = e.target.result;
-                this.insertarSVG(contenidoSvg, input);
+                this.#insertarSVG(contenidoSvg, input);
             };
             lector.readAsText(archivo);
         } else {
@@ -118,9 +120,9 @@ class CargadorSVG {
         }
     }
 
-    insertarSVG(contenidoSvg, input) {
-        if (this.articuloSVG) {
-            this.articuloSVG.remove();
+    #insertarSVG(contenidoSvg, input) {
+        if (this.#articuloSVG) {
+            this.#articuloSVG.remove();
         }
 
         const h2 = $("<h2></h2>").text("Altimetría del circuito");
@@ -133,13 +135,14 @@ class CargadorSVG {
         }
         $contenedor.after(article);
 
-        this.articuloSVG = article[0];
+        this.#articuloSVG = article[0];
     }
 }
 
 class CargadorKML {
+    #articuloMapa;
     constructor() {
-        this.articuloMapa = null;
+        this.#articuloMapa = null;
     }
 
     leerArchivoKML(files, input) {
@@ -155,10 +158,10 @@ class CargadorKML {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(kmlString, "application/xml");
 
-                const geojson = this.kmlToGeoJSON(kml);
+                const geojson = this.#kmlToGeoJSON(kml);
 
                 try {
-                    this.insertarCapaKML(geojson, input);
+                    this.#insertarCapaKML(geojson, input);
                 } catch (error) {
                     // Si algo revienta al pintar el mapa
                     añadirTextoError(1, "Tipo de archivo incorrecto");
@@ -171,13 +174,13 @@ class CargadorKML {
         }
     }
 
-    insertarCapaKML(geojson, input) {
+    #insertarCapaKML(geojson, input) {
         mapboxgl.accessToken =
             "pk.eyJ1IjoiYmVnZWdhZmVybmFuZG8iLCJhIjoiY20zZWkxaDNwMGI4ZTJscXhhbGsxeWI3aiJ9.5OHMMeLIsf0DgIkGXEo3jA";
 
         // Elimina el mapa anterior si existía
-        if (this.articuloMapa) {
-            this.articuloMapa.remove();
+        if (this.#articuloMapa) {
+            this.#articuloMapa.remove();
         }
 
         // Crea el <article> y el contenedor del mapa
@@ -193,7 +196,7 @@ class CargadorKML {
         }
         $contenedor.after(article);
 
-        this.articuloMapa = article[0];
+        this.#articuloMapa = article[0];
 
         // --- Función auxiliar: obtiene la primera [lon, lat] válida para centrar el mapa ---
         function obtenerPrimeraCoordenada(geojsonObj) {
@@ -298,7 +301,7 @@ class CargadorKML {
         });
     }
 
-    kmlToGeoJSON(kmlString) {
+    #kmlToGeoJSON(kmlString) {
         const parser = new DOMParser();
         const kml = typeof kmlString === "string"
             ? parser.parseFromString(kmlString, "application/xml")

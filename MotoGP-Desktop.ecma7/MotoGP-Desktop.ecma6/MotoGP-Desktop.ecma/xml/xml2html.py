@@ -202,12 +202,12 @@ def generar_info_html(root: ET.Element, out_path: Path):
             if nombre_archivo:
                 alt = f'Fotografía: {nombre_archivo}'
             # Cada imagen en su propio párrafo, una detrás de otra
-            h.open('p')
+
             h.raw(
                 f'<img src="{escape(url, quote=True)}" '
                 f'alt="{escape(alt, quote=True)}">'
             )
-            h.close('p')
+            
         h.close('section')
 
     # Galería de vídeos (SIN lista)

@@ -10,8 +10,10 @@ class Noticias {
         this.#url = "https://api.thenewsapi.com/v1/news/all";
         this.#$seccion = null;
 
-       this.crearSeccion();
-        $(() => this.buscar());
+       $(() => {
+            this.crearSeccion();
+            this.buscar();
+         });
     }
 
     crearSeccion(){
@@ -25,39 +27,43 @@ class Noticias {
         }
     }
 
-    buscar() {
+buscar() {
+    const params = {
+        api_token: "ggL1vOUhHKx4HtjEPNF9MvTKOAFLewUIMy7TD7cV",
+        search: this.#busqueda,
+        language: "es",
+        limit: 6
+    };
 
-        const params = {
-            api_token: "ggL1vOUhHKx4HtjEPNF9MvTKOAFLewUIMy7TD7cV",
-            search: this.#busqueda,   
-            language: "es",       
-            limit: 6                  
-        };
+    const esc = encodeURIComponent;
+    const query = Object.keys(params)
+        .map(k => esc(k) + "=" + esc(params[k]))
+        .join("&");
 
-        const esc = encodeURIComponent;
-        const query = Object.keys(params)
-            .map(k => esc(k) + "=" + esc(params[k]))
-            .join("&");
+    const urlCompleta = this.#url + "?" + query;
 
-        const urlCompleta = this.#url + "?" + query;
+    // ⬇⬇⬇ AQUÍ el cambio importante: devolver la promesa de fetch
+    return fetch(urlCompleta, { method: "GET" })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error HTTP " + response.status);
+            }
+            return response.json();   // promesa -> JSON
+        })
+        .then(datosJSON => {
+            this.#procesarInformacion(datosJSON);
+            // ⬇ opcional pero recomendable: que la promesa resuelva con el JSON
+            return datosJSON;
+        })
+        .catch(error => {
+            console.error(error);
+            this.#mostrarError("No se han podido cargar las noticias.");
+            // no re-lanzamos el error para que el comportamiento externo siga igual
+        });
+}
 
-        fetch(urlCompleta, { method: "GET" })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error HTTP " + response.status);
-                }
-                return response.json();  
-            })
-            .then(datosJSON => {
-                this.procesarInformacion(datosJSON);
-            })
-            .catch(error => {
-                console.error(error);
-                this.mostrarError("No se han podido cargar las noticias.");
-            });
-    }
 
-procesarInformacion(json) {
+#procesarInformacion(json) {
     
 
     const $seccion = this.#$seccion;
@@ -66,7 +72,8 @@ procesarInformacion(json) {
     $seccion.children(":not(h2)").remove();
 
     if (!json || !Array.isArray(json.data) || json.data.length === 0) {
-        $seccion.append("<p>No se han encontrado noticias sobre MotoGP.</p>");
+        const $p = $("<p>").text("No se han encontrado noticias sobre MotoGP.");
+        $seccion.append($p);
         return;
     }
 
@@ -103,7 +110,7 @@ procesarInformacion(json) {
     });
 }
 
-mostrarError(mensaje) {
+#mostrarError(mensaje) {
     const $seccion = $("main > section").last();
     if (!$seccion.length) {
         return;

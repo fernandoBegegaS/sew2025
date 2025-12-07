@@ -1,56 +1,76 @@
 class Cronometro {
+  #tiempo;
+  #corriendo;
+  #usaTemporal;
+  #inicio;
+
   constructor() {
-    this.tiempo = 0;       
-    this.corriendo = null;
-    this._usaTemporal = false;
-    this.mostrar();
+    this.#tiempo = 0;
+    this.#corriendo = null;
+    this.#usaTemporal = false;
+    this.#añadirListeners();
+    this.#mostrar();
   }
 
-  arrancar() {
-    this.inicio = null;
-    try {
-      this.inicio = Temporal.Now.instant();
-      this._usaTemporal = true;
-    } catch (e) {
-      this.inicio = new Date();
-      this._usaTemporal = false;
-    }
+  #añadirListeners() {
+    const botones = document.querySelectorAll("main section button");
 
-    if (this.corriendo !== null) {
+    if (botones.length < 3) {
       return;
     }
 
-    this.actualizar();
-    this.corriendo = window.setInterval(this.actualizar.bind(this), 100);
+    const [btnArrancar, btnParar, btnReiniciar] = botones;
+
+    btnArrancar.addEventListener("click", () => this.arrancar());
+    btnParar.addEventListener("click", () => this.parar());
+    btnReiniciar.addEventListener("click", () => this.reiniciar());
   }
 
-  actualizar() {
-    if (!this.inicio) return;
-
+  arrancar() {
+    this.#inicio = null;
     try {
-      if (this._usaTemporal) {
-        const ahora = Temporal.Now.instant();
-        const dur = ahora.since(this.inicio); 
-        this.tiempo = Math.floor(dur.total("milliseconds"));
-      } else {
-        this.tiempo = Date.now() - this.inicio.getTime();
-      }
+      this.#inicio = Temporal.Now.instant();
+      this.#usaTemporal = true;
     } catch (e) {
-      if (!(this.inicio instanceof Date)) {
-        this.inicio = new Date();
-      }
-      this._usaTemporal = false;
-      this.tiempo = Date.now() - this.inicio.getTime();
+      this.#inicio = new Date();
+      this.#usaTemporal = false;
     }
 
-    this.mostrar();
+    if (this.#corriendo !== null) {
+      return;
+    }
+
+    this.#actualizar();
+    this.#corriendo = window.setInterval(() => this.#actualizar(), 100);
   }
 
-  mostrar() {
+  #actualizar() {
+    if (!this.#inicio) return;
+
+    try {
+      if (this.#usaTemporal) {
+        const ahora = Temporal.Now.instant();
+        const dur = ahora.since(this.#inicio);
+        this.#tiempo = Math.floor(dur.total("milliseconds"));
+      } else {
+        this.#tiempo = Date.now() - this.#inicio.getTime();
+      }
+    } catch (e) {
+      if (!(this.#inicio instanceof Date)) {
+        this.#inicio = new Date();
+      }
+      this.#usaTemporal = false;
+      this.#tiempo = Date.now() - this.#inicio.getTime();
+    }
+
+    this.#mostrar();
+  }
+
+  #mostrar() {
     const p = document.querySelector("main p");
     if (!p) return;
 
-    const totalMs = Math.max(0, parseInt(this.tiempo, 10) || 0);
+    const totalMs = Math.max(0, parseInt(this.#tiempo, 10) || 0);
     const decimas = Math.floor((totalMs % 1000) / 100);
     const totalSeg = Math.floor(totalMs / 1000);
     const minutos = Math.floor(totalSeg / 60);
@@ -64,16 +84,16 @@ class Cronometro {
   }
 
   parar() {
-    if (this.corriendo !== null) {
-      window.clearInterval(this.corriendo);
-      this.corriendo = null;
+    if (this.#corriendo !== null) {
+      window.clearInterval(this.#corriendo);
+      this.#corriendo = null;
     }
   }
 
   reiniciar() {
     this.parar();
-    this.tiempo = 0;
-    this.mostrar();
+    this.#tiempo = 0;
+    this.#mostrar();
   }
 }
 

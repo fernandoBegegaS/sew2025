@@ -28,23 +28,28 @@ class Carrusel {
     }
 
     var self = this;
-    $(function () {
-      self.iniciar();
-    });
+    $( () => this.iniciar() );
   }
 
-  getFotografias() {
-    var endpoint = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-    var tags = this.#busqueda;
+  #getFotografias() {
+  const endpoint = "https://api.flickr.com/services/feeds/photos_public.gne";
+  const tags = this.#busqueda;
 
-    return $.getJSON(endpoint, {
+  // Devolvemos el jqXHR igual que hacía $.getJSON
+  return $.ajax({
+    url: endpoint,
+    method: "GET",
+    dataType: "jsonp",          // en vez de jsoncallback=? usamos JSONP bien declarado
+    data: {
       format: "json",
       tagmode: "any",
       tags: tags
-    });
-  }
+    },
+    jsonp: "jsoncallback"       // nombre del parámetro de callback que usa Flickr
+  });
+}
 
-  procesarJSONFotografias(data) {
+  #procesarJSONFotografias(data) {
     var lista = data.items;
     var seleccion = [];
     var i;
@@ -76,7 +81,7 @@ class Carrusel {
     this.#fotos = seleccion;
   }
 
-mostrarFotografias() {
+#mostrarFotografias() {
   var f = this.#fotos[this.#actual];
 
   // Crear la sección desde cero
@@ -91,7 +96,7 @@ mostrarFotografias() {
   var $main = $("main");
   $main.prepend($section);
 
-  // Guardamos la referencia para cambiarFotografia()
+  // Guardamos la referencia para #cambiarFotografia()
   this.#$article = $section;
 
   var self = this;
@@ -99,11 +104,11 @@ mostrarFotografias() {
   // clearInterval(this.#timer);
 
   this.#timer = setInterval(function () {
-    self.cambiarFotografia(1);
+    self.#cambiarFotografia(1);
   }, 3000);
 }
 
-cambiarFotografia(delta) {
+#cambiarFotografia(delta) {
   var n = this.#fotos.length;
   this.#actual = (this.#actual + delta + n) % n;
   var f = this.#fotos[this.#actual];
@@ -114,10 +119,10 @@ cambiarFotografia(delta) {
 
   iniciar() {
     var self = this;
-    this.getFotografias()
+    this.#getFotografias()
       .done(function (json) {
-        self.procesarJSONFotografias(json);
-        self.mostrarFotografias();
+        self.#procesarJSONFotografias(json);
+        self.#mostrarFotografias();
       })
       .fail(function () {
         var $fb = $("<article></article>")

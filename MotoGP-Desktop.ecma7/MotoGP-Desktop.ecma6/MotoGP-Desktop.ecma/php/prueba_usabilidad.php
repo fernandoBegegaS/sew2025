@@ -1,67 +1,120 @@
 <?php
-session_start();
+// ---- SESIÓN ----
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require 'cronometro_logica.php';
 
-$conn = new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+class PruebaUsabilidad {
 
-// Estado de la prueba
-$prueba_iniciada   = isset($_SESSION['prueba_iniciada']) ? $_SESSION['prueba_iniciada'] : false;
-$prueba_finalizada = isset($_SESSION['prueba_finalizada']) ? $_SESSION['prueba_finalizada'] : false;
+    private $conn;
+    private $preguntas = array();
+    private $numPreguntas = 0;
 
-// --- Botón INICIAR PRUEBA ---
-if (isset($_POST['iniciar'])) {
-    $cron = new Cronometro();
-    $cron->arrancar();
-    $_SESSION['cron'] = serialize($cron);
-    $_SESSION['prueba_iniciada'] = true;
-    $_SESSION['prueba_finalizada'] = false;
-    $prueba_iniciada = true;
-    $prueba_finalizada = false;
-}
+    private $prueba_iniciada = false;
+    private $prueba_finalizada = false;
 
-// --- Botón FINALIZAR PRUEBA (primer paso) ---
-if (isset($_POST['terminar'])) {
-
-    if (isset($_SESSION['cron'])) {
-        $cron = unserialize($_SESSION['cron']);
-        $cron->parar();
-        $tiempo = $cron->getTiempo();
-        $_SESSION['tiempo_prueba'] = $tiempo;
+    public function __construct() {
+        $this->conectarBD();
+        $this->cargarPreguntas();
+        $this->cargarEstadoDesdeSesion();
     }
 
-    // Guardamos solo las respuestas a las preguntas
-    $_SESSION['datos_prueba'] = array(
-        'pregunta1' => isset($_POST['pregunta1']) ? $_POST['pregunta1'] : '',
-        'pregunta2' => isset($_POST['pregunta2']) ? $_POST['pregunta2'] : '',
-        'pregunta3' => isset($_POST['pregunta3']) ? $_POST['pregunta3'] : '',
-        'pregunta4' => isset($_POST['pregunta4']) ? $_POST['pregunta4'] : '',
-        'pregunta5' => isset($_POST['pregunta5']) ? $_POST['pregunta5'] : '',
-        'pregunta6' => isset($_POST['pregunta6']) ? $_POST['pregunta6'] : '',
-        'pregunta7' => isset($_POST['pregunta7']) ? $_POST['pregunta7'] : ''
-    );
+    // ---------- CONEXIÓN BD Y PREGUNTAS ----------
 
-    $_SESSION['prueba_iniciada'] = true;
-    $_SESSION['prueba_finalizada'] = true;
-    $prueba_iniciada = true;
-    $prueba_finalizada = true;
-}
+    private function conectarBD() {
+        $this->conn = new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
+        if ($this->conn->connect_error) {
+            die("Conexión fallida: " . $this->conn->connect_error);
+        }
+        $this->conn->set_charset("utf8mb4");
+    }
 
-// --- Botón ENVIAR RESULTADOS (segundo paso) ---
-if (isset($_POST['enviar'])) {
-    if (isset($_SESSION['datos_prueba']) && isset($_SESSION['tiempo_prueba'])) {
-        $datos  = $_SESSION['datos_prueba'];
+    private function cargarPreguntas() {
+        $rutaPreguntas = "preguntas.txt";
+        if (!is_readable($rutaPreguntas)) {
+            die("No se ha podido leer el fichero de preguntas.");
+        }
+        $this->preguntas = file($rutaPreguntas, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $this->numPreguntas = count($this->preguntas);
+    }
+
+    private function cargarEstadoDesdeSesion() {
+        $this->prueba_iniciada   = isset($_SESSION['prueba_iniciada']) ? $_SESSION['prueba_iniciada'] : false;
+        $this->prueba_finalizada = isset($_SESSION['prueba_finalizada']) ? $_SESSION['prueba_finalizada'] : false;
+    }
+
+    // ---------- MANEJO DEL FORMULARIO ----------
+
+    public function procesarPeticion() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
+        }
+
+        if (isset($_POST['iniciar'])) {
+            $this->iniciarPrueba();
+        } elseif (isset($_POST['terminar'])) {
+            $this->finalizarPrueba();
+        } elseif (isset($_POST['enviar'])) {
+            $this->enviarResultados();
+        }
+
+        // Actualizar flags internos después de tocar sesión
+        $this->cargarEstadoDesdeSesion();
+    }
+
+    private function iniciarPrueba() {
+        $cron = new Cronometro();
+        $cron->arrancar();
+
+        $_SESSION['cron'] = serialize($cron);
+        $_SESSION['prueba_iniciada'] = true;
+        $_SESSION['prueba_finalizada'] = false;
+
+        $this->prueba_iniciada = true;
+        $this->prueba_finalizada = false;
+    }
+
+    private function finalizarPrueba() {
+        // Parar cronómetro y guardar tiempo
+        if (isset($_SESSION['cron'])) {
+            $cron = unserialize($_SESSION['cron']);
+            $cron->parar();
+            $tiempo = $cron->getTiempo();
+            $_SESSION['tiempo_prueba'] = $tiempo;
+        }
+
+        // Guardar respuestas a todas las preguntas
+        $datosPrueba = array();
+        for ($i = 0; $i < $this->numPreguntas; $i++) {
+            $clave = 'pregunta' . ($i + 1);
+            $datosPrueba[$clave] = isset($_POST[$clave]) ? $_POST[$clave] : '';
+        }
+
+        $_SESSION['datos_prueba'] = $datosPrueba;
+
+        $_SESSION['prueba_iniciada'] = true;
+        $_SESSION['prueba_finalizada'] = true;
+
+        $this->prueba_iniciada = true;
+        $this->prueba_finalizada = true;
+    }
+
+    private function enviarResultados() {
+        if (!isset($_SESSION['datos_prueba']) || !isset($_SESSION['tiempo_prueba'])) {
+            return;
+        }
+
         $tiempo = $_SESSION['tiempo_prueba'];
 
         // Datos personales (segunda pantalla)
-        $codigo     = isset($_POST['codigo']) ? (int)$_POST['codigo'] : 0;
-        $profesion  = isset($_POST['profesion']) ? $_POST['profesion'] : '';
-        $edad       = isset($_POST['edad']) ? (int)$_POST['edad'] : 0;
-        $genero     = isset($_POST['genero']) ? $_POST['genero'] : '';
-        $pericia    = isset($_POST['pericia']) ? $_POST['pericia'] : '';
-        $dispositivo= isset($_POST['dispositivo']) ? $_POST['dispositivo'] : '';
+        $codigo      = isset($_POST['codigo']) ? (int)$_POST['codigo'] : 0;
+        $profesion   = isset($_POST['profesion']) ? $_POST['profesion'] : '';
+        $edad        = isset($_POST['edad']) ? (int)$_POST['edad'] : 0;
+        $genero      = isset($_POST['genero']) ? $_POST['genero'] : '';
+        $pericia     = isset($_POST['pericia']) ? (int)$_POST['pericia'] : 0; // 1-10
+        $dispositivo = isset($_POST['dispositivo']) ? $_POST['dispositivo'] : '';
 
         $comentarios   = isset($_POST['comentarios']) ? $_POST['comentarios'] : '';
         $propuestas    = isset($_POST['propuestas']) ? $_POST['propuestas'] : '';
@@ -69,22 +122,43 @@ if (isset($_POST['enviar'])) {
         $observaciones = isset($_POST['observaciones']) ? $_POST['observaciones'] : '';
 
         // Insert en Usuarios
-        $stmt = $conn->prepare("INSERT INTO Usuarios (codigo_usuario, profesion, edad, genero, pericia) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("isiss", $codigo, $profesion, $edad, $genero, $pericia);
+        $stmt = $this->conn->prepare(
+            "INSERT INTO Usuarios (codigo_usuario, profesion, edad, genero, pericia)
+             VALUES (?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param("isisi", $codigo, $profesion, $edad, $genero, $pericia);
         $stmt->execute();
         $stmt->close();
 
         // Insert en Resultados
-        $completado    = 1;
-        $tiempo_entero = (int)round($tiempo);
-        $stmt = $conn->prepare("INSERT INTO Resultados (codigo_usuario, dispositivo, tiempo, completado, comentarios_usuario, propuestas, valoracion) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isisssi", $codigo, $dispositivo, $tiempo_entero, $completado, $comentarios, $propuestas, $valoracion);
+        $completado    = 1; // si en algún momento añades "abandona", aquí podría ir 0
+        $tiempo_entero = (int) round($tiempo);
+
+        $stmt = $this->conn->prepare(
+            "INSERT INTO Resultados
+             (codigo_usuario, dispositivo, tiempo, completado,
+              comentarios_usuario, propuestas, valoracion)
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param(
+            "isiissi",
+            $codigo,
+            $dispositivo,
+            $tiempo_entero,
+            $completado,
+            $comentarios,
+            $propuestas,
+            $valoracion
+        );
         $stmt->execute();
         $stmt->close();
 
         // Insert en Observaciones (si hay)
         if ($observaciones !== '') {
-            $stmt = $conn->prepare("INSERT INTO Observaciones (codigo_usuario, comentario) VALUES (?, ?)");
+            $stmt = $this->conn->prepare(
+                "INSERT INTO Observaciones (codigo_usuario, comentario)
+                 VALUES (?, ?)"
+            );
             $stmt->bind_param("is", $codigo, $observaciones);
             $stmt->execute();
             $stmt->close();
@@ -99,35 +173,72 @@ if (isset($_POST['enviar'])) {
         unset($_SESSION['cronometro_inicio']);
         unset($_SESSION['cronometro_tiempo']);
 
-        echo("Prueba finalizada");
+        session_unset();   // vacía el array $_SESSION
+        session_destroy();
+
+        echo "Prueba finalizada";
         exit();
     }
-}
 
-// Valores por defecto para rellenar el formulario
-$valores = array(
-    'codigo'      => '',
-    'profesion'   => '',
-    'edad'        => '',
-    'genero'      => '',
-    'pericia'     => '',
-    'dispositivo' => '',
-    'pregunta1'   => '',
-    'pregunta2'   => '',
-    'pregunta3'   => '',
-    'pregunta4'   => '',
-    'pregunta5'   => '',
-    'pregunta6'   => '',
-    'pregunta7'   => ''
-);
+    // ---------- GETTERS PARA LA VISTA ----------
 
-if (isset($_SESSION['datos_prueba'])) {
-    foreach ($valores as $clave => $valor) {
-        if (isset($_SESSION['datos_prueba'][$clave])) {
-            $valores[$clave] = $_SESSION['datos_prueba'][$clave];
+    public function getPreguntas() {
+        return $this->preguntas;
+    }
+
+    public function getNumPreguntas() {
+        return $this->numPreguntas;
+    }
+
+    public function isPruebaIniciada() {
+        return $this->prueba_iniciada;
+    }
+
+    public function isPruebaFinalizada() {
+        return $this->prueba_finalizada;
+    }
+
+    public function getValoresFormulario() {
+        // Valores por defecto
+        $valores = array(
+            'codigo'      => '',
+            'profesion'   => '',
+            'edad'        => '',
+            'genero'      => '',
+            'pericia'     => '',
+            'dispositivo' => ''
+        );
+
+        // Campos de preguntas
+        for ($i = 0; $i < $this->numPreguntas; $i++) {
+            $clave = 'pregunta' . ($i + 1);
+            $valores[$clave] = '';
         }
+
+        // Rellenar desde sesión si existe
+        if (isset($_SESSION['datos_prueba'])) {
+            foreach ($_SESSION['datos_prueba'] as $clave => $valor) {
+                if (array_key_exists($clave, $valores)) {
+                    $valores[$clave] = $valor;
+                }
+            }
+        }
+
+        return $valores;
     }
 }
+
+// ======================================================
+// CÓDIGO "CONTROLADOR" + VISTA
+// ======================================================
+
+$prueba = new PruebaUsabilidad();
+$prueba->procesarPeticion();
+
+$preguntas         = $prueba->getPreguntas();
+$valores           = $prueba->getValoresFormulario();
+$prueba_iniciada   = $prueba->isPruebaIniciada();
+$prueba_finalizada = $prueba->isPruebaFinalizada();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -143,176 +254,130 @@ if (isset($_SESSION['datos_prueba'])) {
 
 <?php if (!$prueba_iniciada): ?>
 
-<form method="post">
-    <p><button type="submit" name="iniciar">Iniciar prueba</button></p>
-</form>
+    <form method="post">
+        <p><button type="submit" name="iniciar">Iniciar prueba</button></p>
+    </form>
 
 <?php else: ?>
 
-<form method="post">
+    <form method="post">
 
-    <!-- PREGUNTAS: visibles SIEMPRE.
-         Antes de finalizar: required.
-         Después de finalizar: readonly. -->
+        <!-- PREGUNTAS generadas desde el fichero -->
+        <?php foreach ($preguntas as $indice => $textoPregunta):
+            $numero      = $indice + 1;
+            $nombreCampo = 'pregunta' . $numero;
+        ?>
+            <p>
+                <label>
+                    Pregunta <?php echo $numero; ?>:
+                    <?php echo htmlspecialchars($textoPregunta); ?><br>
+                    <input
+                        type="text"
+                        name="<?php echo $nombreCampo; ?>"
+                        value="<?php echo htmlspecialchars($valores[$nombreCampo]); ?>"
+                        <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
+                </label>
+            </p>
+        <?php endforeach; ?>
 
-    <p>
-        <label>Pregunta 1: ¿Cuál es la cilindrada de las MotoGP actuales?<br>
-            <input type="text" name="pregunta1"
-                   value="<?php echo htmlspecialchars($valores['pregunta1']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+        <?php if ($prueba_finalizada): ?>
 
-    <p>
-        <label>Pregunta 2: ¿Cuál es el nombre del piloto actual de MotoGP con más campeonatos mundiales?<br>
-            <input type="text" name="pregunta2"
-                   value="<?php echo htmlspecialchars($valores['pregunta2']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <!-- DATOS PERSONALES (segunda pantalla) -->
 
-    <p>
-        <label>Pregunta 3: ¿Qué tipo de neumáticos utilizan las motocicletas en MotoGP?<br>
-            <input type="text" name="pregunta3"
-                   value="<?php echo htmlspecialchars($valores['pregunta3']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <p>
+                <label>Código de usuario:
+                    <input type="number" name="codigo"
+                           value="<?php echo htmlspecialchars($valores['codigo']); ?>"
+                           required>
+                </label>
+            </p>
 
-    <p>
-        <label>Pregunta 4: ¿Cuántos cilindros suele tener el motor de una MotoGP?<br>
-            <input type="text" name="pregunta4"
-                   value="<?php echo htmlspecialchars($valores['pregunta4']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <p>
+                <label>Profesión:
+                    <input type="text" name="profesion"
+                           value="<?php echo htmlspecialchars($valores['profesion']); ?>"
+                           required>
+                </label>
+            </p>
 
-    <p>
-        <label>Pregunta 5: Nombra un circuito famoso que aparece en el calendario de MotoGP.<br>
-            <input type="text" name="pregunta5"
-                   value="<?php echo htmlspecialchars($valores['pregunta5']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <p>
+                <label>Edad:
+                    <input type="number" name="edad"
+                           value="<?php echo htmlspecialchars($valores['edad']); ?>"
+                           required>
+                </label>
+            </p>
 
-    <p>
-        <label>Pregunta 6: ¿En qué año se celebró el primer Campeonato del Mundo de MotoGP?<br>
-            <input type="text" name="pregunta6"
-                   value="<?php echo htmlspecialchars($valores['pregunta6']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <p>
+                <label>Género:
+                    <select name="genero" required>
+                        <option value="">Seleccione</option>
+                        <option value="Masculino" <?php if ($valores['genero'] === 'Masculino') echo 'selected'; ?>>Masculino</option>
+                        <option value="Femenino" <?php if ($valores['genero'] === 'Femenino') echo 'selected'; ?>>Femenino</option>
+                        <option value="Otro"      <?php if ($valores['genero'] === 'Otro')      echo 'selected'; ?>>Otro</option>
+                    </select>
+                </label>
+            </p>
 
-    <p>
-        <label>Pregunta 7: ¿Cuál es la categoría anterior a MotoGP dentro del Mundial de Motociclismo?<br>
-            <input type="text" name="pregunta7"
-                   value="<?php echo htmlspecialchars($valores['pregunta7']); ?>"
-                   <?php echo $prueba_finalizada ? 'readonly' : 'required'; ?>>
-        </label>
-    </p>
+            <p>
+                <label>Pericia informática (1 a 10):
+                    <input type="number" name="pericia" min="1" max="10"
+                           value="<?php echo htmlspecialchars($valores['pericia']); ?>"
+                           required>
+                </label>
+            </p>
 
-    <?php if ($prueba_finalizada): ?>
+            <p>
+                <label>Dispositivo:
+                    <select name="dispositivo" required>
+                        <option value="">Seleccione</option>
+                        <option value="Ordenador" <?php if ($valores['dispositivo'] === 'Ordenador') echo 'selected'; ?>>Ordenador</option>
+                        <option value="Tableta"   <?php if ($valores['dispositivo'] === 'Tableta')   echo 'selected'; ?>>Tableta</option>
+                        <option value="Telefono"  <?php if ($valores['dispositivo'] === 'Telefono')  echo 'selected'; ?>>Teléfono</option>
+                    </select>
+                </label>
+            </p>
 
-        <!-- DATOS PERSONALES: solo se ven DESPUÉS de Finalizar prueba -->
+            <!-- COMENTARIOS Y VALORACIÓN -->
 
-        <p>
-            <label>Código de usuario:
-                <input type="number" name="codigo"
-                       value="<?php echo htmlspecialchars($valores['codigo']); ?>"
-                       required>
-            </label>
-        </p>
+            <p>
+                <label>Comentarios del usuario:<br>
+                    <textarea name="comentarios" rows="4" cols="40"></textarea>
+                </label>
+            </p>
 
-        <p>
-            <label>Profesión:
-                <input type="text" name="profesion"
-                       value="<?php echo htmlspecialchars($valores['profesion']); ?>"
-                       required>
-            </label>
-        </p>
+            <p>
+                <label>Propuestas de mejora:<br>
+                    <textarea name="propuestas" rows="4" cols="40"></textarea>
+                </label>
+            </p>
 
-        <p>
-            <label>Edad:
-                <input type="number" name="edad"
-                       value="<?php echo htmlspecialchars($valores['edad']); ?>"
-                       required>
-            </label>
-        </p>
+            <p>
+                <label>Valoración de la aplicación (0 a 10):
+                    <input type="number" name="valoracion" min="0" max="10" required>
+                </label>
+            </p>
 
-        <p>
-            <label>Género:
-                <select name="genero" required>
-                    <option value="">Seleccione</option>
-                    <option value="Masculino" <?php if ($valores['genero'] === 'Masculino') echo 'selected'; ?>>Masculino</option>
-                    <option value="Femenino" <?php if ($valores['genero'] === 'Femenino') echo 'selected'; ?>>Femenino</option>
-                    <option value="Otro" <?php if ($valores['genero'] === 'Otro') echo 'selected'; ?>>Otro</option>
-                </select>
-            </label>
-        </p>
+            <p>
+                <label>Comentarios del observador:<br>
+                    <textarea name="observaciones" rows="4" cols="40"></textarea>
+                </label>
+            </p>
 
-        <p>
-            <label>Pericia informática:
-                <select name="pericia" required>
-                    <option value="">Seleccione</option>
-                    <option value="Baja" <?php if ($valores['pericia'] === 'Baja') echo 'selected'; ?>>Baja</option>
-                    <option value="Media" <?php if ($valores['pericia'] === 'Media') echo 'selected'; ?>>Media</option>
-                    <option value="Alta" <?php if ($valores['pericia'] === 'Alta') echo 'selected'; ?>>Alta</option>
-                </select>
-            </label>
-        </p>
+            <p>
+                <button type="submit" name="enviar">Enviar resultados</button>
+            </p>
 
-        <p>
-            <label>Dispositivo:
-                <select name="dispositivo" required>
-                    <option value="">Seleccione</option>
-                    <option value="Ordenador" <?php if ($valores['dispositivo'] === 'Ordenador') echo 'selected'; ?>>Ordenador</option>
-                    <option value="Tableta" <?php if ($valores['dispositivo'] === 'Tableta') echo 'selected'; ?>>Tableta</option>
-                    <option value="Teléfono" <?php if ($valores['dispositivo'] === 'Teléfono') echo 'selected'; ?>>Teléfono</option>
-                </select>
-            </label>
-        </p>
+        <?php else: ?>
 
-        <!-- COMENTARIOS Y VALORACIÓN (segunda pantalla) -->
+            <!-- Primera pantalla: solo preguntas + botón finalizar -->
+            <p>
+                <button type="submit" name="terminar">Finalizar prueba</button>
+            </p>
 
-        <p>
-            <label>Comentarios del usuario:<br>
-                <textarea name="comentarios" rows="4"></textarea>
-            </label>
-        </p>
+        <?php endif; ?>
 
-        <p>
-            <label>Propuestas de mejora:<br>
-                <textarea name="propuestas" rows="4"></textarea>
-            </label>
-        </p>
-
-        <p>
-            <label>Valoración de la aplicación (0 a 10):
-                <input type="number" name="valoracion" min="0" max="10" required>
-            </label>
-        </p>
-
-        <p>
-            <label>Comentarios del observador:<br>
-                <textarea name="observaciones" rows="4"></textarea>
-            </label>
-        </p>
-
-        <p>
-            <button type="submit" name="enviar">Enviar resultados</button>
-        </p>
-
-    <?php else: ?>
-
-        <!-- Primera pantalla: solo preguntas + botón finalizar -->
-
-        <p>
-            <button type="submit" name="terminar">Finalizar prueba</button>
-        </p>
-
-    <?php endif; ?>
-
-</form>
+    </form>
 
 <?php endif; ?>
 

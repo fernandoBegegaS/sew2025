@@ -29,8 +29,6 @@ main > h2 ~ section > h3 {
 main > h2 ~ section > article {
   flex: 1 1 14rem;
   padding: 0.5rem 0.75rem;
-  border: 0.0625rem solid #ccc;
-  background-color: #fff;
 }
 
 /* El primer artículo de cada sección ocupa toda la fila (Sol, por ejemplo) */
@@ -38,7 +36,37 @@ main > h2 ~ section > article:first-of-type {
   flex-basis: 100%;
 }
 
-@media (min-width: 200px) and (max-width: 550px) {
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    display: block;    
+    max-width: 100%;   
+    height: auto;       
+}
+
+
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+article:has(> div) {
+    height: 70vh; 
+}
+
+article > div {
+      width: 100%;   
+      height: 50vh;    
+      
+  }
+
+
+  
+
+@media (min-width: 351px) and (max-width: 550px) {
   header {
     flex-direction: column;
     justify-content: flex-start;
@@ -62,10 +90,29 @@ main > h2 ~ section > article:first-of-type {
 
   video {
     width: 100%;
-    height: auto;
   }
 
   audio {
     width: 100%;
   }
+
+  article > div {
+      height: 40vh;    
+  }
+
+  article:has(> div) {
+    height: 60vh; 
+}
+
+  
+}
+
+
+@media (max-width: 350px) {
+  
+  
+  article > div {
+      height: 28vh;    
+  }
+
 }
