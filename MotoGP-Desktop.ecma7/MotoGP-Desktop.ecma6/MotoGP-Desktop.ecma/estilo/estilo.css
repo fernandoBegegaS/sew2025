@@ -17,6 +17,7 @@ header {
     box-sizing: border-box;
 }
 
+a:link,
 a:visited {
   color: #000000;
 }
@@ -42,7 +43,7 @@ header a {
     
 }
 
-header a:visited {
+header a:link, header a:visited {
     color: #ffffff; 
 }
 
@@ -117,33 +118,41 @@ main > ul {
     margin: 1rem 0;
 }
 
-/* Separación entre elementos de la lista */
 main > ul > li + li {
     margin-top: 0.5rem;
 }
 
-/* Estado normal y visitado: alto contraste (negro sobre blanco) */
+
+
+/* Dos opciones documentarlo como falso positivo de la herramienta o directamente cambiarlo*/
+
 main > ul > li > a:link,
 main > ul > li > a:visited {
     display: block;
     padding: 0.5rem 0.75rem;
-    background-color: #ffffff;      /* fondo blanco */
-    border: 0.1rem solid #B30000;   /* borde rojo corporativo */
+    background-color: #ffffff;      
+    border: 0.1rem solid #B30000;   
     border-radius: 0.25rem;
-    color: #000000;                 /* texto negro → contraste 21:1 */
+    color: #000000;                 
     text-decoration: none;
 }
 
-/* Hover y foco (teclado): alto contraste (blanco sobre rojo oscuro) */
+/* main > ul > li > a:hover,
+main > ul > li > a:focus {
+    background-color: #B30000;      
+    color: #ffffff;                 
+    outline: 0.125rem solid #000000;   
+    outline-offset: 0.125rem;
+} */
+
+
 main > ul > li > a:hover,
 main > ul > li > a:focus {
-    background-color: #B30000;      /* rojo oscuro */
-    color: #ffffff;                 /* texto blanco → contraste ~7.2:1 */
-    outline: 0.125rem solid #000000;   /* foco muy visible */
+    transform: scale(1.005);        
+    outline: 0.125rem solid #B30000; 
     outline-offset: 0.125rem;
+
 }
-
-
 
 
 @media (max-width: 768px) {

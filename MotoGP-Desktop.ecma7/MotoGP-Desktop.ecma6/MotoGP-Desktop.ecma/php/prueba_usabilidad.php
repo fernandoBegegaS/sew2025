@@ -176,7 +176,33 @@ class PruebaUsabilidad {
         session_unset();   // vacía el array $_SESSION
         session_destroy();
 
-        echo "Prueba finalizada";
+        echo <<<HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>MotoGP-Desktop - Prueba finalizada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ventana de finalización de una prueba de usabilidad de MotoGP-Desktop.">
+    <!-- Ajusta la ruta si tu PHP NO está dentro de /php/ -->
+    <link rel="icon" href="../multimedia/imagenes/icon.ico" type="image/x-icon">
+</head>
+<body>
+    <main>
+        <h1>Prueba finalizada</h1>
+        <p>La sesión de prueba ha terminado correctamente.</p>
+        <p>Si esta ventana no se cierra automáticamente, puedes cerrarla manualmente desde el navegador.</p>
+    </main>
+
+    <script>
+        // Intentamos cerrar la ventana solo si el navegador lo permite
+        window.addEventListener("DOMContentLoaded", function () {
+            window.close();
+        });
+    </script>
+</body>
+</html>
+HTML;
         exit();
     }
 
