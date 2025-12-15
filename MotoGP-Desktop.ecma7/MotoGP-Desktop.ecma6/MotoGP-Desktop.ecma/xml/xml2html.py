@@ -173,7 +173,7 @@ def generar_info_html(root: ET.Element, out_path: Path):
     # Referencias
     refs = many('.//ns:referencias/ns:referencia', root)
     if refs:
-        h.open('nav')
+        h.open('section')
         h.text('h2', 'Referencias')
         h.open('ul')
         for r in refs:
@@ -186,7 +186,7 @@ def generar_info_html(root: ET.Element, out_path: Path):
             else:
                 h.text('li', label)
         h.close('ul')
-        h.close('nav')
+        h.close('section')
 
     # Galería de fotografías (SIN lista)
     fotos = many('.//ns:galeria_fotografias/ns:fotografia', root)
@@ -198,9 +198,7 @@ def generar_info_html(root: ET.Element, out_path: Path):
             if not url:
                 continue
             nombre_archivo = url.split('/')[-1]
-            alt = 'Fotografía del circuito'
-            if nombre_archivo:
-                alt = f'Fotografía: {nombre_archivo}'
+            alt = f'Vista del circuito {nombre}'
             # Cada imagen en su propio párrafo, una detrás de otra
 
             h.raw(
@@ -225,7 +223,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
                 tipo = 'video/webm'
             elif lower.endswith('.ogg') or lower.endswith('.ogv'):
                 tipo = 'video/ogg'
-            h.open('p')
             h.raw('<video controls>')
             h.raw(
                 f'<source src="{escape(url, quote=True)}" '
@@ -233,7 +230,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
             )
             h.raw('Tu navegador no soporta el elemento video.')
             h.raw('</video>')
-            h.close('p')
         h.close('section')
 
     h.close('main')

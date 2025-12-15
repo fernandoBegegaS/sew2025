@@ -24,12 +24,81 @@ class PruebaUsabilidad {
     // ---------- CONEXIÓN BD Y PREGUNTAS ----------
 
     private function conectarBD() {
-        $this->conn = new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
-        if ($this->conn->connect_error) {
-            die("Conexión fallida: " . $this->conn->connect_error);
-        }
-        $this->conn->set_charset("utf8mb4");
+    // Silencia warnings de mysqli para controlarlo nosotros
+    $this->conn = @new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
+
+    if ($this->conn->connect_errno) {
+        // (Opcional) deja rastro en logs del servidor sin enseñarlo al usuario
+        error_log("Error BD ({$this->conn->connect_errno}): {$this->conn->connect_error}");
+
+        // Reinicia sesión para evitar estados incoherentes
+        $this->reiniciarSesion();
+
+        // Muestra HTML de error y corta ejecución
+        $this->mostrarPantallaErrorBD((int)$this->conn->connect_errno);
+        exit();
     }
+
+    $this->conn->set_charset("utf8mb4");
+}
+
+private function reiniciarSesion() {
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        return;
+    }
+
+    // Vacía variables
+    $_SESSION = [];
+
+    // Borra cookie de sesión si existe
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
+    }
+
+    session_destroy();
+}
+
+private function mostrarPantallaErrorBD(int $errno) {
+    // 1049 = Unknown database (base de datos no existe)
+    $mensaje = ($errno === 1049)
+        ? "No existe la base de datos necesaria (UO295286_DB) o no está disponible en este servidor."
+        : "No se ha podido establecer conexión con la base de datos en este momento.";
+
+    $self = htmlspecialchars($_SERVER['PHP_SELF'] ?? '', ENT_QUOTES, 'UTF-8');
+
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>MotoGP-Desktop - Error de base de datos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pantalla de error cuando no existe o no está disponible la base de datos de la prueba de usabilidad.">
+    <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
+    <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
+    <link rel="icon" href="../multimedia/imagenes/configuracion.ico" type="image/x-icon">
+</head>
+<body>
+    <main>
+        <h1>Error de base de datos</h1>
+        <p>La base de datos no existe</p>
+        <p>Acceda a la opcion de "Administracion de base de datos" en el menu de "Juegos" y pulse la opcion "Reinicia base de datos" </p>
+        <p>Se ha reiniciado la sesión de la prueba para evitar guardar datos incompletos.</p>
+        <p><a href="{$self}">Reintentar</a></p>
+    </main>
+</body>
+</html>
+HTML;
+}
 
     private function cargarPreguntas() {
         $rutaPreguntas = "preguntas.txt";
@@ -184,22 +253,16 @@ class PruebaUsabilidad {
     <title>MotoGP-Desktop - Prueba finalizada</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ventana de finalización de una prueba de usabilidad de MotoGP-Desktop.">
-    <!-- Ajusta la ruta si tu PHP NO está dentro de /php/ -->
-    <link rel="icon" href="../multimedia/imagenes/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
+    <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
+    <link rel="icon" href="../multimedia/imagenes/configuracion.ico" type="image/x-icon">
 </head>
 <body>
     <main>
         <h1>Prueba finalizada</h1>
         <p>La sesión de prueba ha terminado correctamente.</p>
-        <p>Si esta ventana no se cierra automáticamente, puedes cerrarla manualmente desde el navegador.</p>
+        <p>Puede cerrar esta ventana cuando desee.</p>
     </main>
-
-    <script>
-        // Intentamos cerrar la ventana solo si el navegador lo permite
-        window.addEventListener("DOMContentLoaded", function () {
-            window.close();
-        });
-    </script>
 </body>
 </html>
 HTML;

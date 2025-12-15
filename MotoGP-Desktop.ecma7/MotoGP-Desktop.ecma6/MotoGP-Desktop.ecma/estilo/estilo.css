@@ -149,8 +149,8 @@ main > ul > li > a:focus {
 main > ul > li > a:hover,
 main > ul > li > a:focus {
     transform: scale(1.005);        
-    outline: 0.125rem solid #B30000; 
-    outline-offset: 0.125rem;
+    outline: 0.125rem solid #B30000;
+    border-radius: 0.50rem;
 
 }
 

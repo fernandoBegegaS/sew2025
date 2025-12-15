@@ -1,0 +1,5 @@
+Comprueba que cuando eliminas la base de datos o la reinicias y recargas y luego te metes a la prueba de usaubilidad hay veces que no esta funcionando. Posiblemente vas a tener que hacer un método en común para que si no existe la base de datos la cree siempre.
+Revisar el tema de los errores del HTML la verdad y mirar a ver el enunciado que pide concretamente 
+
+preguntar si se puede usar el strong
+preguntar como va lo de infohtml

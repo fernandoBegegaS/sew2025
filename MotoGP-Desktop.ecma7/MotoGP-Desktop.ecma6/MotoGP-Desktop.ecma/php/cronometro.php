@@ -31,7 +31,7 @@ require 'cronometro_logica.php';
     </header>
     <p><a href="../index.html">Inicio</a> >> <a href="../juegos.html">Juegos</a> >> <strong>Cronometro php</strong></p>
     <h2>Cronómetro</h2>
-    <form method="post" action="">
+    <form method="post">
         <button type="submit" name="accion" value="arrancar">Arrancar</button>
         <button type="submit" name="accion" value="parar">Parar</button>
         <button type="submit" name="accion" value="mostrar">Mostrar</button>

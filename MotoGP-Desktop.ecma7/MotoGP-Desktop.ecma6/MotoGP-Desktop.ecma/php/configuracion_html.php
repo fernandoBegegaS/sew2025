@@ -11,16 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $config->exportarCSV(); // dentro hace exit();
     }
 
-    // Reiniciar BD
     if (isset($_POST['reiniciar'])) {
-        $config->reiniciar(); // que NO haga echo dentro
-        $mensaje = "Base de datos reiniciada correctamente.";
+        $mensaje = $config->reiniciar(); // usa el return
     }
 
     // Eliminar BD
     if (isset($_POST['eliminar'])) {
-        $config->eliminar(); // que NO haga echo dentro
-        $mensaje = "Base de datos eliminada correctamente.";
+        $mensaje = $config->eliminar();  // usa el return
     }
 }
 ?>

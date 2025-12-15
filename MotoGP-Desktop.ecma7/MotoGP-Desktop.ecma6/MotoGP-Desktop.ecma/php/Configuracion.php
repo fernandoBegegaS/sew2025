@@ -57,11 +57,11 @@ class Configuracion {
         $this->conn->query("TRUNCATE TABLE Resultados");
         $this->conn->query("TRUNCATE TABLE Usuarios");
         $this->conn->query("SET FOREIGN_KEY_CHECKS=1");
-        echo "Base de datos reiniciada correctamente.";
+        return "Base de datos reiniciada correctamente.";
     }
     public function eliminar() {
         $this->conn->query("DROP DATABASE UO295286_DB");
-        echo "Base de datos eliminada correctamente.";
+        return "Base de datos eliminada correctamente.";
     }
 public function exportarCSV() {
     $sql = "SELECT 
