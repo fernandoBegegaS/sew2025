@@ -18,31 +18,46 @@ class Ciudad {
     this.#coordenadas = coordenadas;
   }
   
-getNombre() {
+#obtenerDL() {
   const destino = document.querySelector("main");
-  destino.insertAdjacentHTML("beforeend", "<p>" + this.#nombre + "</p>");
+  let dl = destino.querySelector("dl");
+
+  if (!dl) {
+    dl = document.createElement("dl");
+    destino.appendChild(dl);
+  }
+  return dl;
+}
+
+#anadirTerminoValor(termino, valor) {
+  const dl = this.#obtenerDL();
+
+  const dt = document.createElement("dt");
+  dt.textContent = termino;
+
+  const dd = document.createElement("dd");
+  dd.textContent = valor;
+
+  dl.append(dt, dd);
+}
+
+getNombre() {
+  this.#anadirTerminoValor("Nombre", this.#nombre);
 }
 
 getPais() {
-  const destino = document.querySelector("main");
-  destino.insertAdjacentHTML("beforeend", "<p>" + this.#pais + "</p>");
+  this.#anadirTerminoValor("País", this.#pais);
 }
 
 getInformacionSecundaria() {
-  const destino = document.querySelector("main");
-  let string = "<ul>";
-  string += "<li>" + this.#gentilicio + "</li>";
-  string += "<li>" + this.#poblacion + " ciudadanos </li>";
-  string += "</ul>";
-  destino.insertAdjacentHTML("beforeend", string);
+  this.#anadirTerminoValor("Gentilicio", this.#gentilicio);
+  this.#anadirTerminoValor("Población", `${this.#poblacion} habitantes`);
 }
 
 escribirCoordenadas() {
-  const destino = document.querySelector("main");
-  const p = document.createElement("p");
-  p.textContent = "coordenadas: " + this.#coordenadas;
-  destino.appendChild(p);
+  this.#anadirTerminoValor("Coordenadas", String(this.#coordenadas));
 }
+
 
   getMeteorologiaCarrera(fechaISO, lat, lon) {
     var url =

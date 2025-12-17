@@ -22,6 +22,22 @@ a:visited {
   color: #000000;
 }
 
+main dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 0.75rem; 
+ 
+}
+
+main dt::after {
+  content: ":";
+  margin-left: 0.25rem;
+}
+
+main dd {
+  margin: 0;
+}
+
 section {
     margin: 1rem 0;
     padding: 0.75rem 1rem;
