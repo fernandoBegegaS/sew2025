@@ -94,7 +94,9 @@ class Carrusel {
 
   // Insertar la sección como primer hijo de <main>
   var $main = $("main");
-  $main.prepend($section);
+  var $main = $("main");
+  var $h2Indice = $main.children("h2").first();
+  $section.insertAfter($h2Indice);
 
   // Guardamos la referencia para #cambiarFotografia()
   this.#$article = $section;

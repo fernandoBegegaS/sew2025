@@ -71,30 +71,61 @@ class Circuito {
     #mostrarHTML(contenidoHTML, input) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(contenidoHTML, "text/html");
-
+      
         if (this.#articuloHTML) {
-            this.#articuloHTML.remove();
+          this.#articuloHTML.remove();
         }
-
+      
         const article = document.createElement("article");
         const h2 = document.createElement("h2");
         h2.textContent = "Información del circuito";
         article.appendChild(h2);
-
-        const cuerpo = doc.body;
-        while (cuerpo.firstChild) {
-            article.appendChild(cuerpo.firstChild);
+      
+        const main = doc.querySelector("main");
+        const fuente = main ? main : doc.body; // (por seguridad)
+      
+        while (fuente.firstChild) {
+          const nodo = fuente.firstChild;
+      
+          // ===== NUEVO: bajar un nivel los headings al insertarlos (h1->h2, h2->h3, ...) =====
+          if (nodo.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/.test(nodo.tagName)) {
+            const oldLevel = parseInt(nodo.tagName.substring(1), 10);
+            const newLevel = Math.min(6, oldLevel + 1);
+      
+            const nuevoH = document.createElement("h" + newLevel);
+      
+            // Copiar atributos (id, class, etc.)
+            for (const attr of Array.from(nodo.attributes)) {
+              nuevoH.setAttribute(attr.name, attr.value);
+            }
+      
+            // Mover el contenido (soporta spans/em/links dentro del heading)
+            while (nodo.firstChild) {
+              nuevoH.appendChild(nodo.firstChild);
+            }
+      
+            // Quitar el heading original del documento parseado
+            fuente.removeChild(nodo);
+      
+            // Insertar el heading nuevo ya rebajado
+            article.appendChild(nuevoH);
+          } else {
+            // Resto de nodos: mover tal cual
+            article.appendChild(nodo);
+          }
+          // ===== FIN NUEVO =====
         }
-
-        // Insertar JUSTO debajo del input (o de su <p> contenedor si existe)
+      
         let contenedor = $(input).closest("p");
         if (contenedor.length === 0) {
-            contenedor = $(input);
+          contenedor = $(input);
         }
         contenedor.after(article);
-
+      
         this.#articuloHTML = article;
-    }
+      }
+      
+      
 }
 
 class CargadorSVG {

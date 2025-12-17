@@ -3,7 +3,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.uniovi.es circuito.xsd">
           
-    <nombre>Red Bull Grand Prix of The Americas (MotoGP 2025)</nombre>
+    <nombre>Grand Premio de las Americas (MotoGP 2025)</nombre>
   
     <longitud_circuito unidades="m">5513</longitud_circuito>
     <anchura_media unidades="m">15</anchura_media>

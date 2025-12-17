@@ -1,5 +1,5 @@
 <?php
-// cronometro_logica.php
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -52,7 +52,6 @@ class Cronometro {
     }
 }
 
-// ----- LÓGICA DE CONTROL -----
 
 $cronometro = new Cronometro();
 $tiempoMostrado = "";

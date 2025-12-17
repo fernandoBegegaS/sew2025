@@ -6,7 +6,6 @@ class Clasificacion
 
     public function __construct()
     {
-        /* Ruta al XML del circuito, según las prácticas anteriores */
         $this->documento = "../xml/circuitoEsquema.xml";
         $this->xml = null;
     }
@@ -14,14 +13,11 @@ class Clasificacion
     public function consultar()
     {
         if (is_readable($this->documento)) {
-            // Leemos el archivo como en los ejemplos del profesor
             $datos = file_get_contents($this->documento);
 
             if ($datos !== false) {
-                // Quitamos el namespace por simplicidad (en los ejemplos no se tratan)
                 $datosSinNamespace = str_replace('xmlns="http://www.uniovi.es"', '', $datos);
 
-                // Se convierte el string en un objeto XML
                 $this->xml = new SimpleXMLElement($datosSinNamespace);
             }
         }
@@ -86,7 +82,6 @@ class Clasificacion
                 $posicion = (string)$piloto['posicion'];
             }
 
-            // El contenido del elemento es el nombre del piloto
             $nombre = trim((string)$piloto);
 
             $resultado[] = array(
@@ -99,7 +94,6 @@ class Clasificacion
     }
 }
 
-/* Uso de la clase */
 $clasificacion = new Clasificacion();
 $clasificacion->consultar();
 $ganador = $clasificacion->obtenerGanador();
@@ -108,7 +102,6 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
 <!DOCTYPE HTML>
 <html lang="es">
 <head>
-    <!-- Datos que describen el documento -->
     <meta charset="UTF-8" />
     <title>MotoGP-Clasificaciones</title>
     <meta name="author" content="Fernando Begega Suarez" />
@@ -121,7 +114,6 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
 </head>
 
 <body>
-    <!-- Datos con el contenido que aparece en el navegador -->
     <header>
         <h1><a href="../index.html">MotoGP Desktop</a></h1>
         <nav>
@@ -136,10 +128,10 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
     </header>
 
     <p><a href="../index.html">Inicio</a> >> <strong>Clasificaciones</strong></p>
-    <h2>Clasificaciones MotoGP-Desktop</h2>
+    <h2>Clasificaciones: Gran Premio de las Americas</h2>
 
     <?php if ($ganador !== null) { ?>
-        <h3>Ganador de la carrera</h3>
+        <h3>Ganador del Gran Premio</h3>
         <p>Piloto ganador:
             <?php echo htmlspecialchars($ganador["nombre"]); ?>
         </p>
@@ -150,7 +142,7 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
         <p>No se ha podido obtener la información del ganador de la carrera.</p>
     <?php } ?>
 
-    <h3>Clasificación del mundial tras la carrera</h3>
+    <h3>Clasificación del mundial tras el</h3>
 
     <?php if (!empty($mundial)) { ?>
         <table>

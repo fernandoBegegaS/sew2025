@@ -31,8 +31,9 @@ article img {
     height: 100%;
     position: absolute;
     border-radius: 0.5em;
-    background: #1C7CCC;
+    background: #A2CDF1;
     backface-visibility: hidden;
+    border: 0.17em solid #000; 
 }
 
 /* Regla para centrar el texto "Memory Card" vertical y horizontalmente en cada carta */

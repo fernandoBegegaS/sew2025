@@ -1,57 +1,54 @@
 <?php
 class Configuracion {
-    private $conn;
-    private $dbName = "UO295286_DB";
+    private mysqli $conn;
+    private string $dbName = "UO295286_DB";
 
     public function __construct() {
-        // Conexión al servidor (sin BD de momento)
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
         $this->conn = new mysqli("localhost", "DBUSER2025", "DBPSWD2025");
-
-        if ($this->conn->connect_error) {
-            die("Conexión fallida: " . $this->conn->connect_error);
-        }
-
-        // Charset recomendado
         $this->conn->set_charset("utf8mb4");
 
-        // Intentar seleccionar la BD; si no existe, crearla desde el SQL
-        if (!$this->conn->select_db($this->dbName)) {
-            $this->crearBaseDeDatosDesdeSQL();
-            if (!$this->conn->select_db($this->dbName)) {
-                die("No se pudo seleccionar la base de datos tras crearla.");
-            }
+        try {
+            $this->conn->select_db($this->dbName);
+        } catch (mysqli_sql_exception $e) {
+
+            $this->crearBaseDeDatos();
+            $this->conn->select_db($this->dbName);
+
+            $this->crearTablasDesdeSQL("UO295286_DB.sql");
         }
     }
 
-    /**
-     * Lee el archivo UO295286_DB.sql y ejecuta todo su contenido.
-     * El .sql debe contener los CREATE DATABASE/TABLES que ya tienes.
-     */
-    private function crearBaseDeDatosDesdeSQL() {
-        // Ajusta la ruta si el SQL está en otro sitio
-        $rutaSQL =  "UO295286_DB.sql";
+    private function crearBaseDeDatos(): void {
+        $db = $this->dbName;
+        $this->conn->query(
+            "CREATE DATABASE IF NOT EXISTS `$db`
+             CHARACTER SET utf8mb4
+             COLLATE utf8mb4_unicode_ci"
+        );
+    }
 
-        if (!file_exists($rutaSQL)) {
-            die("No se ha encontrado el archivo SQL: " . $rutaSQL);
+    private function crearTablasDesdeSQL(string $rutaSQL): void {
+        if (!is_readable($rutaSQL)) {
+            throw new RuntimeException("No se ha encontrado/lechable el SQL: " . $rutaSQL);
         }
 
         $sql = file_get_contents($rutaSQL);
         if ($sql === false) {
-            die("No se ha podido leer el archivo SQL.");
+            throw new RuntimeException("No se ha podido leer el archivo SQL.");
         }
 
-        if ($this->conn->multi_query($sql) === false) {
-            die("Error al ejecutar el script SQL: " . $this->conn->error);
-        }
+        $this->conn->multi_query($sql);
 
-        // Limpiar todos los posibles resultados intermedios
         do {
-            if ($resultado = $this->conn->store_result()) {
-                $resultado->free();
+            if ($res = $this->conn->store_result()) {
+                $res->free();
             }
         } while ($this->conn->more_results() && $this->conn->next_result());
     }
-    public function reiniciar() {
+
+    public function reiniciar(): string {
         $this->conn->query("SET FOREIGN_KEY_CHECKS=0");
         $this->conn->query("TRUNCATE TABLE Observaciones");
         $this->conn->query("TRUNCATE TABLE Resultados");
@@ -59,63 +56,12 @@ class Configuracion {
         $this->conn->query("SET FOREIGN_KEY_CHECKS=1");
         return "Base de datos reiniciada correctamente.";
     }
-    public function eliminar() {
-        $this->conn->query("DROP DATABASE UO295286_DB");
+
+    public function eliminar(): string {
+        $db = $this->dbName;
+        $this->conn->query("DROP DATABASE IF EXISTS `$db`");
         return "Base de datos eliminada correctamente.";
     }
-public function exportarCSV() {
-    $sql = "SELECT 
-                u.codigo_usuario,
-                u.profesion,
-                u.edad,
-                u.genero,
-                u.pericia,
-                r.dispositivo,
-                r.tiempo,
-                r.completado,
-                r.comentarios_usuario,
-                r.propuestas,
-                r.valoracion,
-                o.comentario AS comentario_facilitador
-            FROM Usuarios u
-            LEFT JOIN Resultados r ON u.codigo_usuario = r.codigo_usuario
-            LEFT JOIN Observaciones o ON u.codigo_usuario = o.codigo_usuario";
-
-    $result = $this->conn->query($sql);
-
-    if (!$result) {
-        die("Error al obtener los datos para CSV: " . $this->conn->error);
-    }
-
-    header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename=datosUsabilidad.csv');
-
-    $output = fopen('php://output', 'w');
-
-    // Cabecera del CSV (usamos ; como separador)
-    fputcsv($output, array(
-        'CodigoUsuario',
-        'Profesion',
-        'Edad',
-        'Genero',
-        'Pericia',
-        'Dispositivo',
-        'Tiempo',
-        'Completado',
-        'ComentariosUsuario',
-        'Propuestas',
-        'Valoracion',
-        'ComentarioFacilitador'
-    ), ';');
-
-    // Filas de datos
-    while ($row = $result->fetch_assoc()) {
-        fputcsv($output, array_values($row), ';');
-    }
-
-    fclose($output);
-    exit();
-}
 
 }
 ?>

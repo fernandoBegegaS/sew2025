@@ -1,11 +1,11 @@
 <?php
-// cronometro_vista.php
+
 require 'cronometro_logica.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Datos que describen el documento -->
+
     <meta charset="UTF-8" />
     <title>MotoGP-Juegos</title>
     <meta name ="author" content ="Fernando Begega Suarez"/>

@@ -3,21 +3,21 @@ require 'Configuracion.php';
 $config  = new Configuracion();
 $mensaje = "";
 
-// Procesar acciones ANTES del HTML
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Exportar: solo CSV, sin HTML
+
     if (isset($_POST['exportar'])) {
-        $config->exportarCSV(); // dentro hace exit();
+        $config->exportarCSV(); 
     }
 
     if (isset($_POST['reiniciar'])) {
-        $mensaje = $config->reiniciar(); // usa el return
+        $mensaje = $config->reiniciar(); 
     }
 
-    // Eliminar BD
+  
     if (isset($_POST['eliminar'])) {
-        $mensaje = $config->eliminar();  // usa el return
+        $mensaje = $config->eliminar(); 
     }
 }
 ?>

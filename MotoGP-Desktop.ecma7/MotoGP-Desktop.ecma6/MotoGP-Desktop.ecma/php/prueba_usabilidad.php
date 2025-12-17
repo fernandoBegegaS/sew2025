@@ -21,36 +21,32 @@ class PruebaUsabilidad {
         $this->cargarEstadoDesdeSesion();
     }
 
-    // ---------- CONEXIÓN BD Y PREGUNTAS ----------
 
     private function conectarBD() {
-    // Silencia warnings de mysqli para controlarlo nosotros
-    $this->conn = @new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
-
-    if ($this->conn->connect_errno) {
-        // (Opcional) deja rastro en logs del servidor sin enseñarlo al usuario
-        error_log("Error BD ({$this->conn->connect_errno}): {$this->conn->connect_error}");
-
-        // Reinicia sesión para evitar estados incoherentes
-        $this->reiniciarSesion();
-
-        // Muestra HTML de error y corta ejecución
-        $this->mostrarPantallaErrorBD((int)$this->conn->connect_errno);
-        exit();
+        
+        try {
+            $this->conn = new mysqli("localhost", "DBUSER2025", "DBPSWD2025", "UO295286_DB");
+            $this->conn->set_charset("utf8mb4");
+        } catch (mysqli_sql_exception $e) {
+            
+            error_log("Error BD ({$e->getCode()}): {$e->getMessage()}");
+    
+            
+            $this->reiniciarSesion();
+    
+            
+            $this->mostrarPantallaErrorBD((int)$e->getCode());
+            exit();
+        }
     }
-
-    $this->conn->set_charset("utf8mb4");
-}
 
 private function reiniciarSesion() {
     if (session_status() !== PHP_SESSION_ACTIVE) {
         return;
     }
 
-    // Vacía variables
     $_SESSION = [];
 
-    // Borra cookie de sesión si existe
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
         setcookie(
@@ -68,7 +64,6 @@ private function reiniciarSesion() {
 }
 
 private function mostrarPantallaErrorBD(int $errno) {
-    // 1049 = Unknown database (base de datos no existe)
     $mensaje = ($errno === 1049)
         ? "No existe la base de datos necesaria (UO295286_DB) o no está disponible en este servidor."
         : "No se ha podido establecer conexión con la base de datos en este momento.";
@@ -114,7 +109,6 @@ HTML;
         $this->prueba_finalizada = isset($_SESSION['prueba_finalizada']) ? $_SESSION['prueba_finalizada'] : false;
     }
 
-    // ---------- MANEJO DEL FORMULARIO ----------
 
     public function procesarPeticion() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -129,7 +123,6 @@ HTML;
             $this->enviarResultados();
         }
 
-        // Actualizar flags internos después de tocar sesión
         $this->cargarEstadoDesdeSesion();
     }
 
@@ -146,7 +139,6 @@ HTML;
     }
 
     private function finalizarPrueba() {
-        // Parar cronómetro y guardar tiempo
         if (isset($_SESSION['cron'])) {
             $cron = unserialize($_SESSION['cron']);
             $cron->parar();
@@ -154,7 +146,6 @@ HTML;
             $_SESSION['tiempo_prueba'] = $tiempo;
         }
 
-        // Guardar respuestas a todas las preguntas
         $datosPrueba = array();
         for ($i = 0; $i < $this->numPreguntas; $i++) {
             $clave = 'pregunta' . ($i + 1);
@@ -177,7 +168,6 @@ HTML;
 
         $tiempo = $_SESSION['tiempo_prueba'];
 
-        // Datos personales (segunda pantalla)
         $codigo      = isset($_POST['codigo']) ? (int)$_POST['codigo'] : 0;
         $profesion   = isset($_POST['profesion']) ? $_POST['profesion'] : '';
         $edad        = isset($_POST['edad']) ? (int)$_POST['edad'] : 0;
@@ -190,7 +180,6 @@ HTML;
         $valoracion    = isset($_POST['valoracion']) ? (int)$_POST['valoracion'] : null;
         $observaciones = isset($_POST['observaciones']) ? $_POST['observaciones'] : '';
 
-        // Insert en Usuarios
         $stmt = $this->conn->prepare(
             "INSERT INTO Usuarios (codigo_usuario, profesion, edad, genero, pericia)
              VALUES (?, ?, ?, ?, ?)"
@@ -199,8 +188,7 @@ HTML;
         $stmt->execute();
         $stmt->close();
 
-        // Insert en Resultados
-        $completado    = 1; // si en algún momento añades "abandona", aquí podría ir 0
+        $completado    = 1; 
         $tiempo_entero = (int) round($tiempo);
 
         $stmt = $this->conn->prepare(
@@ -222,7 +210,6 @@ HTML;
         $stmt->execute();
         $stmt->close();
 
-        // Insert en Observaciones (si hay)
         if ($observaciones !== '') {
             $stmt = $this->conn->prepare(
                 "INSERT INTO Observaciones (codigo_usuario, comentario)
@@ -233,7 +220,6 @@ HTML;
             $stmt->close();
         }
 
-        // Limpiar sesión
         unset($_SESSION['cron']);
         unset($_SESSION['tiempo_prueba']);
         unset($_SESSION['datos_prueba']);
@@ -242,7 +228,7 @@ HTML;
         unset($_SESSION['cronometro_inicio']);
         unset($_SESSION['cronometro_tiempo']);
 
-        session_unset();   // vacía el array $_SESSION
+        session_unset();  
         session_destroy();
 
         echo <<<HTML
@@ -269,7 +255,6 @@ HTML;
         exit();
     }
 
-    // ---------- GETTERS PARA LA VISTA ----------
 
     public function getPreguntas() {
         return $this->preguntas;
@@ -288,7 +273,7 @@ HTML;
     }
 
     public function getValoresFormulario() {
-        // Valores por defecto
+
         $valores = array(
             'codigo'      => '',
             'profesion'   => '',
@@ -298,13 +283,11 @@ HTML;
             'dispositivo' => ''
         );
 
-        // Campos de preguntas
         for ($i = 0; $i < $this->numPreguntas; $i++) {
             $clave = 'pregunta' . ($i + 1);
             $valores[$clave] = '';
         }
 
-        // Rellenar desde sesión si existe
         if (isset($_SESSION['datos_prueba'])) {
             foreach ($_SESSION['datos_prueba'] as $clave => $valor) {
                 if (array_key_exists($clave, $valores)) {
@@ -317,9 +300,6 @@ HTML;
     }
 }
 
-// ======================================================
-// CÓDIGO "CONTROLADOR" + VISTA
-// ======================================================
 
 $prueba = new PruebaUsabilidad();
 $prueba->procesarPeticion();
@@ -351,7 +331,6 @@ $prueba_finalizada = $prueba->isPruebaFinalizada();
 
     <form method="post">
 
-        <!-- PREGUNTAS generadas desde el fichero -->
         <?php foreach ($preguntas as $indice => $textoPregunta):
             $numero      = $indice + 1;
             $nombreCampo = 'pregunta' . $numero;
@@ -371,7 +350,6 @@ $prueba_finalizada = $prueba->isPruebaFinalizada();
 
         <?php if ($prueba_finalizada): ?>
 
-            <!-- DATOS PERSONALES (segunda pantalla) -->
 
             <p>
                 <label>Código de usuario:
@@ -427,7 +405,6 @@ $prueba_finalizada = $prueba->isPruebaFinalizada();
                 </label>
             </p>
 
-            <!-- COMENTARIOS Y VALORACIÓN -->
 
             <p>
                 <label>Comentarios del usuario:<br>
@@ -459,7 +436,6 @@ $prueba_finalizada = $prueba->isPruebaFinalizada();
 
         <?php else: ?>
 
-            <!-- Primera pantalla: solo preguntas + botón finalizar -->
             <p>
                 <button type="submit" name="terminar">Finalizar prueba</button>
             </p>
