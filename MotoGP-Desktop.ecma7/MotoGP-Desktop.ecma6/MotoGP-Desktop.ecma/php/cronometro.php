@@ -29,7 +29,7 @@ require 'cronometro_logica.php';
         <a href="../ayuda.html" title="Ayuda">Ayuda</a>
 	</nav>
     </header>
-    <p><a href="../index.html">Inicio</a> >> <a href="../juegos.html">Juegos</a> >> <strong>Cronometro php</strong></p>
+    <p><a href="../index.html">Inicio</a>  &gt;&gt; <a href="../juegos.html">Juegos</a> &gt;&gt;  <strong>Cronometro php</strong></p>
     <h2>Cronómetro</h2>
     <form method="post">
         <button type="submit" name="accion" value="arrancar">Arrancar</button>

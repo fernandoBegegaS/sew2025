@@ -114,59 +114,76 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
 </head>
 
 <body>
-    <header>
-        <h1><a href="../index.html">MotoGP Desktop</a></h1>
-        <nav>
-            <a href="../index.html" title="Inicio">Inicio</a>
-            <a href="../piloto.html" title="Información piloto">Piloto</a>
-            <a href="../circuito.html" title="Información circuito">Circuito</a>
-            <a href="../meteorologia.html" title="Información meteorología">Meteorología</a>
-            <a href="clasificaciones.php" title="Información clasificaciones" class="active">Clasificaciones</a>
-            <a href="../juegos.html" title="Información juegos">Juegos</a>
-            <a href="../ayuda.html" title="Ayuda">Ayuda</a>
-        </nav>
-    </header>
+  <header>
+    <h1><a href="../index.html">MotoGP Desktop</a></h1>
+    <nav>
+      <a href="../index.html" title="Inicio">Inicio</a>
+      <a href="../piloto.html" title="Información piloto">Piloto</a>
+      <a href="../circuito.html" title="Información circuito">Circuito</a>
+      <a href="../meteorologia.html" title="Información meteorología">Meteorología</a>
+      <a href="clasificaciones.php" title="Información clasificaciones" class="active">Clasificaciones</a>
+      <a href="../juegos.html" title="Información juegos">Juegos</a>
+      <a href="../ayuda.html" title="Ayuda">Ayuda</a>
+    </nav>
+  </header>
 
-    <p><a href="../index.html">Inicio</a> >> <strong>Clasificaciones</strong></p>
+  <nav aria-label="Migas de pan">
+    <p><a href="../index.html">Inicio</a> &gt;&gt; <strong>Clasificaciones</strong></p>
+  </nav>
+
+  <main>
     <h2>Clasificaciones: Gran Premio de las Americas</h2>
 
-    <?php if ($ganador !== null) { ?>
-        <h3>Ganador del Gran Premio</h3>
-        <p>Piloto ganador:
-            <?php echo htmlspecialchars($ganador["nombre"]); ?>
-        </p>
-        <p>Tiempo empleado:
-            <?php echo htmlspecialchars($ganador["tiempo"]); ?>
-        </p>
-    <?php } else { ?>
+    <section>
+      <h3>Ganador del Gran Premio</h3>
+
+      <?php if ($ganador !== null) { ?>
+        <dl>
+          <dt>Piloto ganador</dt>
+          <dd><?php echo htmlspecialchars($ganador["nombre"]); ?></dd>
+
+          <dt>Tiempo empleado</dt>
+          <dd><?php echo htmlspecialchars($ganador["tiempo"]); ?></dd>
+        </dl>
+      <?php } else { ?>
         <p>No se ha podido obtener la información del ganador de la carrera.</p>
-    <?php } ?>
+      <?php } ?>
+    </section>
 
-    <h3>Clasificación del mundial tras el</h3>
+    <section>
+      <h3>Clasificación del mundial tras el Gran Premio</h3>
 
-    <?php if (!empty($mundial)) { ?>
+      <?php if (!empty($mundial)) { ?>
         <table>
-            <thead>
-                <tr>
-                    <th>Posición</th>
-                    <th>Piloto</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($mundial as $fila) { ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($fila["posicion"]); ?></td>
-                    <td><?php echo htmlspecialchars($fila["nombre"]); ?></td>
-                </tr>
-            <?php } ?>
-                <footer>
-                    <p>MotoGP-Desktop</p>
-                </footer>
-            </tbody>
-        </table>
-    <?php } else { ?>
-        <p>No se ha podido leer la clasificación del mundial.</p>
-    <?php } ?>
+          <caption>Clasificación del mundial</caption>
+          <thead>
+            <tr>
+              <th scope="col" id="posicion">Posición</th>
+              <th scope="col" id="piloto">Piloto</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            <?php $i = 1; foreach ($mundial as $fila) { ?>
+              <tr>
+                <th scope="row" id="<?php echo 'fila' . $i; ?>" headers="posicion">
+                  <?php echo htmlspecialchars($fila["posicion"]); ?>
+                </th>
+                <td headers="<?php echo 'fila' . $i; ?> piloto">
+                  <?php echo htmlspecialchars($fila["nombre"]); ?>
+                </td>
+              </tr>
+            <?php $i++; } ?>
+          </tbody>
+        </table>
+      <?php } else { ?>
+        <p>No se ha podido leer la clasificación del mundial.</p>
+      <?php } ?>
+    </section>
+  </main>
+
+  <footer>
+    <p>MotoGP-Desktop</p>
+  </footer>
 </body>
 </html>

@@ -104,6 +104,11 @@ article > div {
     height: 60vh; 
 }
 
+  main > section table {
+    display: block;
+    overflow-x: auto;
+  }
+
   
 }
 
@@ -114,5 +119,46 @@ article > div {
   article > div {
       height: 28vh;    
   }
+  header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: .5rem;
+  }
+
+  header nav {
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  header nav a {
+    width: 100%;
+    padding: .5rem .75rem;
+  }
+
+  body > header + p {
+    display: none;
+  }
+
+  video {
+    width: 100%;
+  }
+
+  audio {
+    width: 100%;
+  }
+
+
+  article:has(> div) {
+    height: 60vh; 
+}
+
+  main > section table {
+    display: block;
+    overflow-x: auto;
+  }
+
+
+  
 
 }

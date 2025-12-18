@@ -68,63 +68,41 @@ class Circuito {
         }
     }
 
-    #mostrarHTML(contenidoHTML, input) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(contenidoHTML, "text/html");
-      
-        if (this.#articuloHTML) {
-          this.#articuloHTML.remove();
-        }
-      
-        const article = document.createElement("article");
-        const h2 = document.createElement("h2");
-        h2.textContent = "Información del circuito";
-        article.appendChild(h2);
-      
-        const main = doc.querySelector("main");
-        const fuente = main ? main : doc.body; // (por seguridad)
-      
-        while (fuente.firstChild) {
-          const nodo = fuente.firstChild;
-      
-          // ===== NUEVO: bajar un nivel los headings al insertarlos (h1->h2, h2->h3, ...) =====
-          if (nodo.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/.test(nodo.tagName)) {
-            const oldLevel = parseInt(nodo.tagName.substring(1), 10);
-            const newLevel = Math.min(6, oldLevel + 2);
-      
-            const nuevoH = document.createElement("h" + newLevel);
-      
-            // Copiar atributos (id, class, etc.)
-            for (const attr of Array.from(nodo.attributes)) {
-              nuevoH.setAttribute(attr.name, attr.value);
-            }
-      
-            // Mover el contenido (soporta spans/em/links dentro del heading)
-            while (nodo.firstChild) {
-              nuevoH.appendChild(nodo.firstChild);
-            }
-      
-            // Quitar el heading original del documento parseado
-            fuente.removeChild(nodo);
-      
-            // Insertar el heading nuevo ya rebajado
-            article.appendChild(nuevoH);
-          } else {
-            // Resto de nodos: mover tal cual
-            article.appendChild(nodo);
-          }
-          // ===== FIN NUEVO =====
-        }
-      
-        let contenedor = $(input).closest("p");
-        if (contenedor.length === 0) {
-          contenedor = $(input);
-        }
-        contenedor.after(article);
-      
-        this.#articuloHTML = article;
-      }
-      
+#mostrarHTML(contenidoHTML, input) {
+  const doc = new DOMParser().parseFromString(contenidoHTML, "text/html");
+
+  const $origen = $(doc).find("main").first();
+  const $fuente = $origen.length ? $origen : $(doc.body);
+
+  if (this.#articuloHTML) {
+    $(this.#articuloHTML).remove();
+    this.#articuloHTML = null;
+  }
+
+  const $article = $("<article></article>");
+  $article.append($fuente.contents());
+
+  this.#desplazarHeadings($article, 2);
+
+  const $input = $(input);
+  const $contenedor = $input.closest("p").length ? $input.closest("p") : $input;
+  $contenedor.after($article);
+
+  this.#articuloHTML = $article.get(0);
+}
+
+#desplazarHeadings($raiz, offset) {
+  $raiz.find("h1,h2,h3,h4,h5,h6").each(function () {
+    const oldLevel = parseInt(this.tagName.substring(1), 10);
+    const newLevel = Math.min(6, oldLevel + offset);
+    if (newLevel === oldLevel) return;
+
+    const $nuevo = $(`<h${newLevel}></h${newLevel}>`);
+    $nuevo.append($(this).contents());
+    $(this).replaceWith($nuevo);
+  });
+}
+
       
 }
 

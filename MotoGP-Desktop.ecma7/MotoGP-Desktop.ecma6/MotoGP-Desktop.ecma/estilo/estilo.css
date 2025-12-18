@@ -112,12 +112,12 @@ main > section > p:has(> input) {
 
 /* Etiqueta y campo de archivo, cada uno en su línea */
 main > section:first-of-type > p > label,
-main > section:first-of-type > p > input[type="file"] {
+main > section:first-of-type > p > input{
     display: block;
 }
 
 /* El input ocupa todo el ancho disponible */
-body > main > section:first-of-type > p > input[type="file"] {
+body > main > section:first-of-type > p > input{
     width: 100%;
     max-width: 100%;
     font-size: 0.95rem;
@@ -167,6 +167,52 @@ main > ul > li > a:focus {
     border-radius: 0.50rem;
 
 }
+
+main > section table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: #ffffff;
+  color: #111111;
+
+  border: 0.125rem solid #111111;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: auto;
+}
+
+main > section table caption {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-weight: bold;
+}
+
+main > section table th,
+main > section table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-top: 0.0625rem solid #111111;
+}
+
+main > section table thead th {
+  border-top: 0;
+  background-color: #111111;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+main > section table tr > * + * {
+  border-left: 0.0625rem solid #111111;
+}
+
+main > section table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+main > section table tbody tr:hover {
+  background-color: #e6e6e6;
+}
+
 
 
 @media (max-width: 768px) {
