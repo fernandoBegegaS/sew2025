@@ -159,6 +159,9 @@ $mundial = $clasificacion->obtenerClasificacionMundial();
                     <td><?php echo htmlspecialchars($fila["nombre"]); ?></td>
                 </tr>
             <?php } ?>
+                <footer>
+                    <p>MotoGP-Desktop</p>
+                </footer>
             </tbody>
         </table>
     <?php } else { ?>

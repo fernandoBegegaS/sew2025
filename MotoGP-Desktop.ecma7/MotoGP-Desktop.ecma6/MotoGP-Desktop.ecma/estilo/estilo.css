@@ -9,6 +9,8 @@ body {
     font-size: 1.1rem; 
 }
 
+
+
 header {
     background-color: #B30000;
     color: #ffffff;
@@ -46,10 +48,7 @@ section {
 }
 
 /* Título de cada bloque ("Inicio", "Piloto", etc.) */
-h3 {
-    margin-bottom: 0.25rem;
-    font-size: 1.1rem;
-}
+
 
 /* Especificidad: 0,0,0,2 */
 header a {
@@ -92,7 +91,7 @@ main > section > article {
     background-color: #fff;
 }
 
-main > section > article h3 {
+main > section > article h4 {
     margin-bottom: 0.5rem;
     color: #B30000;
 }
@@ -102,19 +101,18 @@ main > section > article a {
     margin-top: 0.5rem;
 }
 
-body > main > p:first-of-type + section > p {
-    margin: 0.5rem auto;          /* centra el bloque */
-    padding: 0.4rem 0.6rem;
-    font-size: 1rem;
-    background-color: #ffffff;
-    border: 0.1rem solid #000000;
-    width: 90%;                   /* ANTES 50% → ahora casi todo el ancho */
-    box-sizing: border-box;
+main > section > p:has(> input) {
+  margin: 0.5rem auto;
+  padding: 0.4rem 0.6rem;
+  background-color: #ffffff;
+  border: 0.1rem solid #000000;
+  width: 90%;
+  box-sizing: border-box;
 }
 
 /* Etiqueta y campo de archivo, cada uno en su línea */
-body > main > section:first-of-type > p > label,
-body > main > section:first-of-type > p > input[type="file"] {
+main > section:first-of-type > p > label,
+main > section:first-of-type > p > input[type="file"] {
     display: block;
 }
 

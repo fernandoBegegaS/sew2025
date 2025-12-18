@@ -16,7 +16,7 @@ header nav a {
 }
 
 
-main > h2 ~ section {
+main > h3 ~ section {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;

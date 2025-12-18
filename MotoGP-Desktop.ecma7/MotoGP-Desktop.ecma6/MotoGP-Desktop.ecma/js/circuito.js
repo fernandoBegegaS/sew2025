@@ -90,7 +90,7 @@ class Circuito {
           // ===== NUEVO: bajar un nivel los headings al insertarlos (h1->h2, h2->h3, ...) =====
           if (nodo.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/.test(nodo.tagName)) {
             const oldLevel = parseInt(nodo.tagName.substring(1), 10);
-            const newLevel = Math.min(6, oldLevel + 1);
+            const newLevel = Math.min(6, oldLevel + 2);
       
             const nuevoH = document.createElement("h" + newLevel);
       

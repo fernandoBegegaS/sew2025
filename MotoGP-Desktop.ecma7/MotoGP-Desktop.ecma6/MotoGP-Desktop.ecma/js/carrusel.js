@@ -86,11 +86,11 @@ class Carrusel {
 
   // Crear la sección desde cero
   var $section = $("<section></section>");
-  var $h2 = $("<h2></h2>").text("Imágenes del circuito de " + this.#nombreCircuito);
+  var $h3 = $("<h3></h3>").text("Imágenes del circuito de " + this.#nombreCircuito);
   var $img = $("<img>").attr({ src: f.src, alt: f.alt });
 
   // Meter el contenido dentro de la sección
-  $section.append($h2, $img);
+  $section.append($h3, $img);
 
   // Insertar la sección como primer hijo de <main>
   var $main = $("main");

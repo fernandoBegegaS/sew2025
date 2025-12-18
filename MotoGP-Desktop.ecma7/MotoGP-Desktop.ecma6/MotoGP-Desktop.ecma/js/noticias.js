@@ -20,8 +20,8 @@ class Noticias {
         const $main = $("main");
         if (!this.#$seccion) {
             const $seccion = $("<section></section>");
-            const $h2 = $("<h2></h2>").text("Noticias MotoGP");
-            $seccion.append($h2);
+            const $h3 = $("<h3></h3>").text("Noticias MotoGP");
+            $seccion.append($h3);
             $main.append($seccion);   
             this.#$seccion = $seccion;
         }
@@ -69,7 +69,7 @@ buscar() {
     const $seccion = this.#$seccion;
 
     // Limpiar todo menos el h2
-    $seccion.children(":not(h2)").remove();
+    $seccion.children(":not(h3)").remove();
 
     if (!json || !Array.isArray(json.data) || json.data.length === 0) {
         const $p = $("<p>").text("No se han encontrado noticias sobre MotoGP.");
@@ -80,7 +80,7 @@ buscar() {
     json.data.forEach(function (noticia) {
         const $articulo = $("<article>");
 
-        $("<h3>")
+        $("<h4>")
             .text(noticia.title || "(Sin título)")
             .appendTo($articulo);
 
@@ -116,7 +116,7 @@ buscar() {
         return;
     }
 
-    $seccion.children(":not(h2)").remove();
+    $seccion.children(":not(h3)").remove();
     $seccion.append($("<p>").text(mensaje));
 }
 }
