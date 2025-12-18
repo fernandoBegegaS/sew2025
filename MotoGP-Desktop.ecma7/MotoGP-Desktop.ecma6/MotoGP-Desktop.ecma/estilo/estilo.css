@@ -24,12 +24,9 @@ a:visited {
   color: #000000;
 }
 
-main dl {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.5rem 0.75rem; 
- 
-}
+
+
+
 
 main dt::after {
   content: ":";
@@ -169,7 +166,6 @@ main > ul > li > a:focus {
 }
 
 main > section table {
-  width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   background-color: #ffffff;
@@ -178,6 +174,7 @@ main > section table {
   border: 0.125rem solid #111111;
   border-radius: 0.5rem;
   overflow: hidden;
+
   width: auto;
 }
 
@@ -201,16 +198,14 @@ main > section table thead th {
   font-weight: bold;
 }
 
-main > section table tr > * + * {
-  border-left: 0.0625rem solid #111111;
-}
 
-main > section table tbody tr:nth-child(even) {
-  background-color: #f5f5f5;
-}
 
-main > section table tbody tr:hover {
-  background-color: #e6e6e6;
+
+
+
+dt{
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 

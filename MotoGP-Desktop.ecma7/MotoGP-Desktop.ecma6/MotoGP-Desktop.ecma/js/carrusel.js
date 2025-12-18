@@ -84,26 +84,20 @@ class Carrusel {
 #mostrarFotografias() {
   var f = this.#fotos[this.#actual];
 
-  // Crear la sección desde cero
   var $section = $("<section></section>");
   var $h3 = $("<h3></h3>").text("Imágenes del circuito de " + this.#nombreCircuito);
   var $img = $("<img>").attr({ src: f.src, alt: f.alt });
 
-  // Meter el contenido dentro de la sección
   $section.append($h3, $img);
 
-  // Insertar la sección como primer hijo de <main>
   var $main = $("main");
   var $main = $("main");
   var $h2Indice = $main.children("h2").first();
   $section.insertAfter($h2Indice);
 
-  // Guardamos la referencia para #cambiarFotografia()
   this.#$article = $section;
 
   var self = this;
-  // (Opcional pero recomendable: limpiar un intervalo previo)
-  // clearInterval(this.#timer);
 
   this.#timer = setInterval(function () {
     self.#cambiarFotografia(1);
@@ -115,7 +109,6 @@ class Carrusel {
   this.#actual = (this.#actual + delta + n) % n;
   var f = this.#fotos[this.#actual];
 
-  // Usamos la sección creada arriba
   this.#$article.find("img").first().attr({ src: f.src, alt: f.alt });
 }
 

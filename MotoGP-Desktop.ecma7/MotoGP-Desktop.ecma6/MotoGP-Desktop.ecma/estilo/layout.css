@@ -1,3 +1,5 @@
+/* UO295286 - Fernando Begega Suárez */
+/* Estilos layout del proyecto MotoGP-Desktop*/
 header {
   display: flex;
   align-items: center;
@@ -63,7 +65,12 @@ article > div {
       
   }
 
-
+main dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 0.75rem; 
+ 
+}
   
 
 @media (min-width: 351px) and (max-width: 550px) {
@@ -107,6 +114,11 @@ article > div {
   main > section table {
     display: block;
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    
   }
 
   
@@ -156,7 +168,25 @@ article > div {
   main > section table {
     display: block;
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    
   }
+
+  main dl {
+  display: block;
+ 
+
+  
+}
+
+main dd{
+  margin: 0 0 1rem 1.5rem;
+}
+
+  
 
 
   

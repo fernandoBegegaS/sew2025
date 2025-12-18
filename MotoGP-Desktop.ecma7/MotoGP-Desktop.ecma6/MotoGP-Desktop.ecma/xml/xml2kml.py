@@ -1,14 +1,7 @@
-# -*- coding: utf-8 -*-
-""" xml2kml.py
-Genera un KML (Google Earth) a partir de 'circuito.xml' usando SOLO XPath con ElementTree.
-- Sin argumentos: lee 'circuito.xml' y escribe 'circuito.kml' junto al script.
-- LineString con altitudeMode=clampToGround (IGNORA la altitud y se pega al terreno).
-- Las coordenadas se escriben como lon,lat (sin altitud).
-"""
+
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-# Namespace del XML (prefijo 'ns' en XPath)
 NS = {'ns': 'http://www.uniovi.es'}
 
 def cargar_raiz(path_xml: str) -> ET.Element:
@@ -29,16 +22,14 @@ def obtener_coordenadas(path_xml: str):
     raiz = cargar_raiz(path_xml)
     coords2d = []
 
-    # **Nuevo:** obtener longitud y latitud del punto de origen
     lon_origen = raiz.findtext('.//ns:punto_origen/ns:longitud', namespaces=NS)
     lat_origen = raiz.findtext('.//ns:punto_origen/ns:latitud', namespaces=NS)
     origen2d = None
     if lon_origen and lat_origen:
         origen2d = (lon_origen.strip(), lat_origen.strip())
-        # Insertar al inicio de la lista de coordenadas del trazado
-        coords2d.append(f"{origen2d[0]},{origen2d[1]}")
 
-    # Tramos: recopilar coordenadas de cada tramo (punto final de cada segmento)
+        coords2d.append(f"{origen2d[0]},{origen2d[1]}")
+        
     for tramo in raiz.findall('.//ns:tramos/ns:tramo', NS):
         lon = tramo.findtext('ns:punto_final/ns:longitud', namespaces=NS)
         lat = tramo.findtext('ns:punto_final/ns:latitud', namespaces=NS)

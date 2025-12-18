@@ -115,7 +115,6 @@ procesarJSONCarrera(json) {
     return new Date(iso).toLocaleTimeString();
   }
 
-  // --- Datos diarios (amanecer / atardecer) ---
   var sunriseISO = json.daily.sunrise[0];
   var sunsetISO = json.daily.sunset[0];
   var diario = {
@@ -125,7 +124,6 @@ procesarJSONCarrera(json) {
     sunsetLocal: toLocalTime(sunsetISO)
   };
 
-  // --- Datos horarios, pero SOLO de 14:00 a 15:59 ---
   var H = json.hourly;
   var times = H.time;
   var horario = [];
@@ -133,10 +131,8 @@ procesarJSONCarrera(json) {
   for (var i = 0; i < times.length; i++) {
     var t = times[i];
     var fecha = new Date(t);
-    var hourLocal = fecha.getHours(); // 0–23 en hora local
+    var hourLocal = fecha.getHours(); 
 
-    // Solo guardamos las horas entre las 14:00 y las 15:59
-    // (es decir, horas 14 y 15 incluidas)
     if (hourLocal >= 14 && hourLocal < 16) {
       horario.push({
         timeISO: String(t),

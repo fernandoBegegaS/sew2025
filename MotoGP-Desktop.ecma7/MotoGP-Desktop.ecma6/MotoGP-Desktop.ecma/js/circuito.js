@@ -2,7 +2,6 @@ function añadirTextoError(indice, texto) {
     const p = $("p:has(input)").eq(indice);
     if (p.length) {
         const input = p.find("input");
-        // Eliminamos cualquier nodo después del input (antiguos errores)
         input.nextAll().remove();
         if (texto) {
             input.after(texto);
@@ -35,7 +34,7 @@ function añadirListners(circuito, cargadorKML, cargadorSVG) {
 class Circuito {
     #articuloHTML;
     constructor() {
-        this.#articuloHTML = null; // último <article> del HTML
+        this.#articuloHTML = null; 
         this.#comprobarApiFile();
     }
 
@@ -187,18 +186,15 @@ class CargadorKML {
         mapboxgl.accessToken =
             "pk.eyJ1IjoiYmVnZWdhZmVybmFuZG8iLCJhIjoiY20zZWkxaDNwMGI4ZTJscXhhbGsxeWI3aiJ9.5OHMMeLIsf0DgIkGXEo3jA";
 
-        // Elimina el mapa anterior si existía
         if (this.#articuloMapa) {
             this.#articuloMapa.remove();
         }
 
-        // Crea el <article> y el contenedor del mapa
         const article = $("<article></article>");
         article.append($("<h2></h2>").text("Mapa Dinámico"));
         const divMapa = $("<div></div>");
         article.append(divMapa);
 
-        // Inserta el artículo justo después del <p> del input (o del input si no hay <p>)
         let $contenedor = $(input).closest("p");
         if ($contenedor.length === 0) {
             $contenedor = $(input);
@@ -207,7 +203,6 @@ class CargadorKML {
 
         this.#articuloMapa = article[0];
 
-        // --- Función auxiliar: obtiene la primera [lon, lat] válida para centrar el mapa ---
         function obtenerPrimeraCoordenada(geojsonObj) {
             for (let i = 0; i < geojsonObj.features.length; i++) {
                 const geom = geojsonObj.features[i].geometry;
@@ -216,15 +211,12 @@ class CargadorKML {
                 }
 
                 if (geom.type === "Point") {
-                    // [lon, lat, alt]
                     return [geom.coordinates[0], geom.coordinates[1]];
                 } else if (geom.type === "LineString") {
-                    // [[lon, lat, alt], ...]
                     if (geom.coordinates.length > 0) {
                         return [geom.coordinates[0][0], geom.coordinates[0][1]];
                     }
                 } else if (geom.type === "Polygon") {
-                    // [ [ [lon, lat, alt], ... ], ... ]
                     if (geom.coordinates.length > 0 && geom.coordinates[0].length > 0) {
                         return [
                             geom.coordinates[0][0][0],
@@ -233,7 +225,6 @@ class CargadorKML {
                     }
                 }
             }
-            // Si no hubiera nada, un centro por defecto
             return [0, 0];
         }
 
@@ -252,7 +243,6 @@ class CargadorKML {
                 data: geojson
             });
 
-            // Capa de líneas (LineString)
             map.addLayer({
                 id: "kmlLineas",
                 type: "line",
@@ -261,11 +251,9 @@ class CargadorKML {
                     "line-color": "#FF0000",
                     "line-width": 2
                 },
-                // Solo las geometrías de tipo LineString
                 filter: ["==", "$type", "LineString"]
             });
 
-            // Capa de puntos (Point) para el "Origen"
             map.addLayer({
                 id: "kmlPuntos",
                 type: "circle",
@@ -286,15 +274,12 @@ class CargadorKML {
                 }
 
                 if (geom.type === "Point") {
-                    // [lon, lat, alt]
                     bounds.extend(geom.coordinates);
                 } else if (geom.type === "LineString") {
-                    // [[lon, lat, alt], ...]
                     geom.coordinates.forEach((coord) => {
                         bounds.extend(coord);
                     });
                 } else if (geom.type === "Polygon") {
-                    // Solo contorno exterior: geom.coordinates[0]
                     if (geom.coordinates.length > 0) {
                         geom.coordinates[0].forEach((coord) => {
                             bounds.extend(coord);
@@ -303,7 +288,6 @@ class CargadorKML {
                 }
             });
 
-            // Solo hacemos fitBounds si hay algo en bounds
             if (!bounds.isEmpty()) {
                 map.fitBounds(bounds, { padding: 20 });
             }

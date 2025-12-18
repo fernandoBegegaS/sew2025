@@ -42,23 +42,20 @@ buscar() {
 
     const urlCompleta = this.#url + "?" + query;
 
-    // ⬇⬇⬇ AQUÍ el cambio importante: devolver la promesa de fetch
     return fetch(urlCompleta, { method: "GET" })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Error HTTP " + response.status);
             }
-            return response.json();   // promesa -> JSON
+            return response.json();  
         })
         .then(datosJSON => {
             this.#procesarInformacion(datosJSON);
-            // ⬇ opcional pero recomendable: que la promesa resuelva con el JSON
             return datosJSON;
         })
         .catch(error => {
             console.error(error);
             this.#mostrarError("No se han podido cargar las noticias.");
-            // no re-lanzamos el error para que el comportamiento externo siga igual
         });
 }
 
@@ -68,7 +65,6 @@ buscar() {
 
     const $seccion = this.#$seccion;
 
-    // Limpiar todo menos el h2
     $seccion.children(":not(h3)").remove();
 
     if (!json || !Array.isArray(json.data) || json.data.length === 0) {

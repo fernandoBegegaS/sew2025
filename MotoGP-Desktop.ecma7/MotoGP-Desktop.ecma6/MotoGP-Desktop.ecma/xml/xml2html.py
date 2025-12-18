@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-xml2html.py (sin <header>)
-Genera "InfoCircuito.html" a partir de "circuitoEsquema.xml" o "circuito.xml"
-con XPath (xml.etree.ElementTree) y una clase Html.
-"""
-
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from html import escape
@@ -85,7 +78,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
     h.close('head')
     h.open('body')
 
-    # SIN <header>: todo arranca en <main>
     h.open('main')
     h.text('h1', nombre)
     if localidad or pais:
@@ -94,7 +86,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
     if patrocinador:
         h.text('p', f'Patrocinador: {patrocinador}')
 
-    # Detalles del evento
     h.open('section')
     h.text('h2', 'Detalles del evento')
     if fecha or hora:
@@ -136,7 +127,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
     h.close('article')
     h.close('section')
 
-    # Resultado
     if vencedor or tiempo:
         h.open('section')
         h.text('h2', 'Resultado')
@@ -146,7 +136,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
             h.text('p', f'Tiempo: {tiempo}')
         h.close('section')
 
-    # Clasificación
     pilotos = many('.//ns:clasificados_mundial/ns:piloto', root)
     if pilotos:
         h.open('section')
@@ -170,7 +159,7 @@ def generar_info_html(root: ET.Element, out_path: Path):
         h.raw('</tbody></table>')
         h.close('section')
 
-    # Referencias
+  
     refs = many('.//ns:referencias/ns:referencia', root)
     if refs:
         h.open('section')
@@ -188,7 +177,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
         h.close('ul')
         h.close('section')
 
-    # Galería de fotografías (SIN lista)
     fotos = many('.//ns:galeria_fotografias/ns:fotografia', root)
     if fotos:
         h.open('section')
@@ -199,7 +187,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
                 continue
             nombre_archivo = url.split('/')[-1]
             alt = f'Vista del circuito {nombre}'
-            # Cada imagen en su propio párrafo, una detrás de otra
 
             h.raw(
                 f'<img src="{escape(url, quote=True)}" '
@@ -208,7 +195,6 @@ def generar_info_html(root: ET.Element, out_path: Path):
             
         h.close('section')
 
-    # Galería de vídeos (SIN lista)
     vids = many('.//ns:galeria_videos/ns:video', root)
     if vids:
         h.open('section')
