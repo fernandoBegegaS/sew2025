@@ -71,10 +71,10 @@ def generar_info_html(root: ET.Element, out_path: Path):
     h.line('<!doctype html>')
     h.open('html', {'lang': 'es'})
     h.open('head')
-    h.raw('<meta charset="utf-8">')
-    h.raw('<meta name="viewport" content="width=device-width, initial-scale=1">')
+    h.raw('<meta charset="utf-8"/>')
+    h.raw('<meta name="viewport" content="width=device-width, initial-scale=1"/>')
     h.text('title', f'Información — {nombre}')
-    h.raw('<link rel="stylesheet" href="../estilo/estilo.css">')
+    h.raw('<link rel="stylesheet" href="../estilo/estilo.css"/>')
     h.close('head')
     h.open('body')
 
