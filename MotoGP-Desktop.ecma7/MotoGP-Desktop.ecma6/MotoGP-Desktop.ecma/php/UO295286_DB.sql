@@ -34,9 +34,8 @@ CREATE TABLE IF NOT EXISTS Observaciones (
 CREATE TABLE IF NOT EXISTS Respuestas (
   id_resultado INT UNSIGNED NOT NULL,
   num_pregunta TINYINT UNSIGNED NOT NULL,
-  respuesta    TINYINT UNSIGNED NOT NULL,
+  respuesta    TEXT NOT NULL,
   PRIMARY KEY (id_resultado, num_pregunta),
   CHECK (num_pregunta BETWEEN 1 AND 10),
-  CHECK (respuesta BETWEEN 0 AND 10),
   FOREIGN KEY (id_resultado) REFERENCES Resultados(id_resultado)
 ) DEFAULT CHARSET=utf8mb4;

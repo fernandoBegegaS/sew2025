@@ -1,5 +1,5 @@
 <?php
-require 'cronometro_logica.php';
+require 'Cronometro.php';
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -74,7 +74,7 @@ private function mostrarPantallaErrorBD(int $errno) {
     <title>Error de base de datos</title>
     <meta name ="author" content ="Fernando Begega Suarez"/>
     <meta name ="description" content ="Página error base de datos" />
-    <meta name ="keywords" content ="" />
+    <meta name ="keywords" content ="error, bd, base, datos, admnistrar" />
     <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Pantalla de error cuando no existe o no está disponible la base de datos de la prueba de usabilidad.">
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
@@ -276,14 +276,18 @@ private function enviarResultados() {
     <title>Prueba de usabilidad finalizada</title>
     <meta name ="author" content ="Fernando Begega Suarez"/>
     <meta name ="description" content ="Página que se muestra tras finalizar la prueba de usabilidad" />
-    <meta name ="keywords" content ="" />
+    <meta name ="keywords" content ="final, resultados, completada" />
     <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
     <link rel="icon" href="../multimedia/imagenes/configuracion.ico" type="image/x-icon">
 </head>
 <body>
-    <h1>Resultados guardados correctamente</h1>
+    
+    <main>
+        <h1>Resultados guardados correctamente</h1>
+        <p>Puede cerrar esta pestaña</p>
+    </main>
 </body>
 </html>
 HTML;

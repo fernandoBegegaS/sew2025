@@ -49,14 +49,29 @@ class Configuracion {
     }
 
 public function reiniciar() {
+
+    try {
+        $this->conn->select_db($this->dbName);
+    } catch (mysqli_sql_exception $e) {
+        $this->crearBaseDeDatos();
+        $this->conn->select_db($this->dbName);
+        $this->crearTablasDesdeSQL(__DIR__ . "/UO295286_DB.sql");
+        return "Base de datos creada y lista (ya estaba vacía).";
+    }
+
     $this->conn->query("SET FOREIGN_KEY_CHECKS=0");
 
     try {
-        $this->conn->query("TRUNCATE TABLE Respuestas");
-        $this->conn->query("TRUNCATE TABLE Observaciones");
-        $this->conn->query("TRUNCATE TABLE Resultados");
-        $this->conn->query("TRUNCATE TABLE Usuarios");
-        return "Base de datos reiniciada correctamente.";
+        try {
+            $this->conn->query("TRUNCATE TABLE Respuestas");
+            $this->conn->query("TRUNCATE TABLE Observaciones");
+            $this->conn->query("TRUNCATE TABLE Resultados");
+            $this->conn->query("TRUNCATE TABLE Usuarios");
+            return "Base de datos reiniciada correctamente.";
+        } catch (mysqli_sql_exception $e) {
+            $this->crearTablasDesdeSQL(__DIR__ . "/UO295286_DB.sql");
+            return "Tablas recreadas y base de datos lista (ya estaba limpia).";
+        }
     } finally {
         $this->conn->query("SET FOREIGN_KEY_CHECKS=1");
     }
@@ -79,7 +94,7 @@ public function exportarCSV() {
     if (!$out) { exit; }
 
     fwrite($out, "\xEF\xBB\xBF");
-    $d = ',';
+    $d = ';';
     $n = 10; 
 
     $head = array(

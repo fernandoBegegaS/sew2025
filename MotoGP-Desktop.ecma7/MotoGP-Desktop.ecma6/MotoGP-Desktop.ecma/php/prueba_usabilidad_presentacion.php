@@ -21,7 +21,7 @@ $prueba_finalizada = $prueba->isPruebaFinalizada();
     <title>Prueba de usabilidad</title>
     <meta name ="author" content ="Fernando Begega Suarez"/>
     <meta name ="description" content ="Página con las preguntas de la prueba de usabilidad" />
-    <meta name ="keywords" content ="" />
+    <meta name ="keywords" content ="prueba, usabilidad, preguntas, comentarios, opinión, calificación" />
     <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
