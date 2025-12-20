@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Configuración Test</title>
+    <meta name ="author" content ="Fernando Begega Suarez"/>
+    <meta name ="description" content ="Página para la configuracion de la base de datos" />
+    <meta name ="keywords" content ="" />
+    <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
     <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
     <link rel="icon" href="../multimedia/imagenes/configuracion.ico" type="image/x-icon">

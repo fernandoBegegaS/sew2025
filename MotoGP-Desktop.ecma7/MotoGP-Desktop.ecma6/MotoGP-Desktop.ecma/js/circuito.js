@@ -1,17 +1,18 @@
-function añadirTextoError(indice, texto) {
+class Utilidades {
+   añadirTextoError(indice, texto) {
     const p = $("p:has(input)").eq(indice);
     if (p.length) {
-        const input = p.find("input");
-        input.nextAll().remove();
-        if (texto) {
-            input.after(texto);
-        }
+      const input = p.find("input");
+      input.nextAll().remove();
+      if (texto) {
+        input.after(texto);
+      }
     } else {
-        console.error("No se encontró un <p> con el índice especificado.");
+      console.error("No se encontró un <p> con el índice especificado.");
     }
-}
+  }
 
-function añadirListners(circuito, cargadorKML, cargadorSVG) {
+   añadirListeners(circuito, cargadorKML, cargadorSVG) {
     const inputs = $("main section input[type='file']");
 
     const inputHTML = inputs.get(0);
@@ -19,22 +20,25 @@ function añadirListners(circuito, cargadorKML, cargadorSVG) {
     const inputSVG  = inputs.get(2);
 
     inputHTML.addEventListener("change", function () {
-        circuito.leerArchivoHTML(this.files, this);
+      circuito.leerArchivoHTML(this.files, this);
     });
 
     inputKML.addEventListener("change", function () {
-        cargadorKML.leerArchivoKML(this.files, this);
+      cargadorKML.leerArchivoKML(this.files, this);
     });
 
     inputSVG.addEventListener("change", function () {
-        cargadorSVG.leerArchivoSVG(this.files, this);
+      cargadorSVG.leerArchivoSVG(this.files, this);
     });
+  }
 }
 
 class Circuito {
     #articuloHTML;
-    constructor() {
+    #util;
+    constructor(util) {
         this.#articuloHTML = null; 
+        this.#util = util;
         this.#comprobarApiFile();
     }
 
@@ -55,7 +59,7 @@ class Circuito {
         const tipoHTML = /html/;
 
         if (archivo && (!archivo.type || archivo.type.match(tipoHTML))) {
-            añadirTextoError(0, "");
+             this.#util.añadirTextoError(0, "");
             const lector = new FileReader();
             lector.onload = (e) => {
                 const contenido = e.target.result;
@@ -63,7 +67,7 @@ class Circuito {
             };
             lector.readAsText(archivo);
         } else {
-            añadirTextoError(0, "Tipo de archivo incorrecto");
+            this.#util.añadirTextoError(0, "Tipo de archivo incorrecto");
         }
     }
 
@@ -107,8 +111,10 @@ class Circuito {
 
 class CargadorSVG {
     #articuloSVG;
-    constructor() {
-        this.#articuloSVG = null; // último <article> de SVG
+    #util;
+    constructor(util) {
+        this.#articuloSVG = null;
+        this.#util = util;
     }
 
     leerArchivoSVG(files, input) {
@@ -116,7 +122,7 @@ class CargadorSVG {
         const tipoSvg = /svg/;
 
         if (archivo && archivo.type.match(tipoSvg)) {
-            añadirTextoError(2, "");
+             this.#util.añadirTextoError(2, "");
             const lector = new FileReader();
             lector.onload = (e) => {
                 const contenidoSvg = e.target.result;
@@ -124,7 +130,7 @@ class CargadorSVG {
             };
             lector.readAsText(archivo);
         } else {
-            añadirTextoError(2, "Tipo de archivo incorrecto");
+             this.#util.añadirTextoError(2, "Tipo de archivo incorrecto");
         }
     }
 
@@ -133,7 +139,7 @@ class CargadorSVG {
             this.#articuloSVG.remove();
         }
 
-        const h2 = $("<h2></h2>").text("Altimetría del circuito");
+        const h2 = $("<h4></h4>").text("Altimetría del circuito");
         const article = $("<article></article>").html(contenidoSvg);
         article.prepend(h2);
 
@@ -149,8 +155,10 @@ class CargadorSVG {
 
 class CargadorKML {
     #articuloMapa;
-    constructor() {
+    #util;
+    constructor(util) {
         this.#articuloMapa = null;
+        this.#util = util;
     }
 
     leerArchivoKML(files, input) {
@@ -158,8 +166,7 @@ class CargadorKML {
 
         if (archivo) {
             const lector = new FileReader();
-            // Limpia mensajes de error previos del segundo input (índice 1)
-            añadirTextoError(1, "");
+             this.#util.añadirTextoError(1, "");
 
             lector.onload = (e) => {
                 const kmlString = e.target.result;
@@ -171,14 +178,13 @@ class CargadorKML {
                 try {
                     this.#insertarCapaKML(geojson, input);
                 } catch (error) {
-                    // Si algo revienta al pintar el mapa
-                    añadirTextoError(1, "Tipo de archivo incorrecto");
+                     this.#util.añadirTextoError(1, "Tipo de archivo incorrecto");
                 }
             };
 
             lector.readAsText(archivo);
         } else {
-            añadirTextoError(1, "Tipo de archivo incorrecto");
+             this.#util.añadirTextoError(1, "Tipo de archivo incorrecto");
         }
     }
 
@@ -191,7 +197,7 @@ class CargadorKML {
         }
 
         const article = $("<article></article>");
-        article.append($("<h2></h2>").text("Mapa Dinámico"));
+        article.append($("<h4></h4>").text("Mapa Dinámico"));
         const divMapa = $("<div></div>");
         article.append(divMapa);
 
@@ -388,8 +394,10 @@ class CargadorKML {
 }
 
 
-const circuito = new Circuito();
-const cargadorSVG = new CargadorSVG();
-const cargadorKML = new CargadorKML();
+const util = new Utilidades();
+const circuito = new Circuito(util);
+const cargadorSVG = new CargadorSVG(util);
+const cargadorKML = new CargadorKML(util);
 
-añadirListners(circuito, cargadorKML, cargadorSVG);
+util.añadirListeners(circuito, cargadorKML, cargadorSVG);
+

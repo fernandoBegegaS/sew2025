@@ -1,46 +1,69 @@
 <?php
 
-require 'cronometro_logica.php';
-?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
 
-    <meta charset="UTF-8" />
-    <title>MotoGP-Juegos</title>
-    <meta name ="author" content ="Fernando Begega Suarez"/>
-    <meta name ="description" content ="Pagina con diferentes juegos relacionados con motoGP" />
-    <meta name ="keywords" content ="" />
-    <meta name ="viewport" content ="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="../multimedia/imagenes/icon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="../estilo/estilo.css">
-    <link rel="stylesheet" type="text/css" href="../estilo/layout.css">
-</head>
-<body>
-    <header>
-        <h1> <a href="../index.html">MotoGP Desktop</a></h1>
-    <nav>
-		<a href="../index.html" title="Inicio">Inicio</a>
-		<a href="../piloto.html" title="Información piloto">Piloto</a>
-        <a href="../circuito.html" title="Información circuito">Circuito</a>
-		<a href="../meteorologia.html" title="Información meteorología">Meteorología</a>
-        <a href="clasificaciones.php" title="Información clasificaiones">Clasificaciones</a>
-		<a href="../juegos.html" title="Información juegos"  class="active">Juegos</a>
-        <a href="../ayuda.html" title="Ayuda">Ayuda</a>
-	</nav>
-    </header>
-    <p><a href="../index.html">Inicio</a>  &gt;&gt; <a href="../juegos.html">Juegos</a> &gt;&gt;  <strong>Cronometro php</strong></p>
-    <h2>Cronómetro</h2>
-    <form method="post">
-        <button type="submit" name="accion" value="arrancar">Arrancar</button>
-        <button type="submit" name="accion" value="parar">Parar</button>
-        <button type="submit" name="accion" value="mostrar">Mostrar</button>
-    </form>
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    <?php if ($tiempoMostrado !== ""): ?>
-        <p>Tiempo transcurrido:
-            <?= htmlspecialchars($tiempoMostrado, ENT_QUOTES, 'UTF-8') ?>
-        </p>
-    <?php endif; ?>
-</body>
-</html>
+class Cronometro {
+    private $inicio;
+    private $tiempo;
+
+    public function __construct() {
+        $this->inicio = null;
+        $this->tiempo = 0.0;
+
+        if (isset($_SESSION["cronometro_inicio"])) {
+            $this->inicio = $_SESSION["cronometro_inicio"];
+        }
+        if (isset($_SESSION["cronometro_tiempo"])) {
+            $this->tiempo = $_SESSION["cronometro_tiempo"];
+        }
+    }
+
+    public function arrancar() {
+        $this->inicio = microtime(true);
+        $_SESSION["cronometro_inicio"] = $this->inicio;
+    }
+
+    public function parar() {
+        if ($this->inicio !== null) {
+            $ahora = microtime(true);
+            $this->tiempo = $ahora - $this->inicio;
+            $_SESSION["cronometro_tiempo"] = $this->tiempo;
+            unset($_SESSION["cronometro_inicio"]);
+            $this->inicio = null;
+        }
+    }
+
+    public function mostrar() {
+        $total = $this->tiempo;
+        if ($total < 0) {
+            $total = 0.0;
+        }
+        $min = floor($total / 60);
+        $seg = floor($total % 60);
+        $dec = floor(($total - $min * 60 - $seg) * 10);
+        return sprintf("%02d:%02d.%d", $min, $seg, $dec);
+    }
+
+    public function getTiempo() {
+        return $this->tiempo;
+    }
+}
+
+
+$cronometro = new Cronometro();
+$tiempoMostrado = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["accion"])) {
+        if ($_POST["accion"] === "arrancar") {
+            $cronometro->arrancar();
+        } elseif ($_POST["accion"] === "parar") {
+            $cronometro->parar();
+        } elseif ($_POST["accion"] === "mostrar") {
+            $tiempoMostrado = $cronometro->mostrar();
+        }
+    }
+}

@@ -86,8 +86,7 @@ attributeFormDefault="unqualified">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="video" />
-				<xs:element minOccurs="0" maxOccurs="1" ref="video" />
-				<xs:element minOccurs="0" maxOccurs="1" ref="video" />
+				<xs:element ref="video" minOccurs="1" maxOccurs="3"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

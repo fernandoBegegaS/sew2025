@@ -5,6 +5,11 @@ class Ciudad {
   #gentilicio;
   #poblacion;
   #coordenadas;
+
+  #jsonEntrenos;
+  #mediasEntrenos;
+  #meteoCarrera;
+
   constructor(nombre, pais, gentilicio) {
     this.#nombre = nombre;
     this.#pais = pais;
@@ -78,9 +83,7 @@ escribirCoordenadas() {
       method: "GET",
       dataType: "json",
       success: function (json) {
-        this.jsonMeteoCarrera = json;
-        this.jsonMeteoCarrera_diario = json.daily;
-        this.jsonMeteoCarrera_horario = json.hourly;
+
         this.procesarJSONCarrera(json);
         this.volcarCarrera();
       }.bind(this),
@@ -182,7 +185,7 @@ procesarJSONCarrera(json) {
     $.getJSON(
       url,
       function (json) {
-        this._jsonEntrenos = json;
+        this.#jsonEntrenos = json;
         this.procesarJSONEntrenos(json);
         this.volcarMediasEntrenos();
       }.bind(this)
@@ -258,12 +261,12 @@ procesarJSONCarrera(json) {
       });
     }
 
-    this._mediasEntrenos = medias;
+    this.#mediasEntrenos = medias;
     return medias;
   }
 
   volcarMediasEntrenos() {
-    var datos = this._mediasEntrenos;
+    var datos = this.#mediasEntrenos;
     var $dest = $("main");
 
     var $sec = $("<section></section>");
