@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<circuito xmlns="http://www.uniovi.es" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.uniovi.es circuito.xsd">
+          
+    <nombre>Grand Premio de las Americas (MotoGP 2025)</nombre>
+  
+    <longitud_circuito unidades="m">5513</longitud_circuito>
+    <anchura_media unidades="m">15</anchura_media>
+  
+    <fecha_carrera>2025-03-30</fecha_carrera>
+    <hora_inicio>14:00</hora_inicio>
+    <numero_vueltas>19</numero_vueltas>
+  
+    <localidad>Austin, Texas</localidad>
+    <pais>Estados Unidos</pais>
+    <patrocinador>Red Bull</patrocinador>
+  
+    <referencias>
+      <referencia>Resultados carrera MotoGP 2025 Américas: ganador, tiempo y vueltas (Motorsport.com)</referencia>
+      <referencia>Ficha del evento 2025 y especificaciones del circuito (MotoGP.com)</referencia>
+      <referencia>Artículo Wikipedia del GP de las Américas 2025</referencia>
+      <referencia>Coordenadas de COTA (lat/long)</referencia>
+    </referencias>
+  
+    <galeria_fotografias>
+      <fotografia>multimedia/imagenes/circuito.jpg</fotografia>
+    </galeria_fotografias>
+  
+    <galeria_videos>
+      <video>multimedia/videos/caida.mp4</video>
+      <video>multimedia/videos/overtake.mp4</video>
+    </galeria_videos>
+  
+    <punto_origen>
+      <longitud>-97.639860</longitud>
+      <latitud>30.131938</latitud>
+      <altitud>158</altitud>
+    </punto_origen>
+  
+  <tramos> 
+  <tramo>
+    <distancia unidades="m">413</distancia>
+    <punto_final>
+      <longitud>-97.639860</longitud>
+      <latitud>30.131938</latitud>
+      <altitud>158</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">29</distancia>
+    <punto_final>
+      <longitud>-97.636767</longitud>
+      <latitud>30.130201</latitud>
+      <altitud>185</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">191</distancia>
+    <punto_final>
+      <longitud>-97.637348</longitud>
+      <latitud>30.131847</latitud>
+      <altitud>168</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">79</distancia>
+    <punto_final>
+      <longitud>-97.637080</longitud>
+      <latitud>30.132514</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">231</distancia>
+    <punto_final>
+      <longitud>-97.635067</longitud>
+      <latitud>30.133655</latitud>
+      <altitud>163</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">99</distancia>
+    <punto_final>
+      <longitud>-97.634666</longitud>
+      <latitud>30.134411</latitud>
+      <altitud>165</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">77</distancia>
+    <punto_final>
+      <longitud>-97.633900</longitud>
+      <latitud>30.134724</latitud>
+      <altitud>161</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">124</distancia>
+    <punto_final>
+      <longitud>-97.633437</longitud>
+      <latitud>30.135864</latitud>
+      <altitud>164</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">98</distancia>
+    <punto_final>
+      <longitud>-97.632503</longitud>
+      <latitud>30.136225</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">157</distancia>
+    <punto_final>
+      <longitud>-97.631121</longitud>
+      <latitud>30.135721</latitud>
+      <altitud>167</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">193</distancia>
+    <punto_final>
+      <longitud>-97.629846</longitud>
+      <latitud>30.136671</latitud>
+      <altitud>175</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">72</distancia>
+    <punto_final>
+      <longitud>-97.629347</longitud>
+      <latitud>30.136519</latitud>
+      <altitud>179</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">42</distancia>
+    <punto_final>
+      <longitud>-97.629044</longitud>
+      <latitud>30.136152</latitud>
+      <altitud>175</altitud>
+    </punto_final>
+    <sector>Sector 1</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">216</distancia>
+    <punto_final>
+      <longitud>-97.627016</longitud>
+      <latitud>30.136561</latitud>
+      <altitud>169</altitud>
+    </punto_final>
+    <sector>Sector 2</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">394</distancia>
+    <punto_final>
+      <longitud>-97.624468</longitud>
+      <latitud>30.139238</latitud>
+      <altitud>165</altitud>
+    </punto_final>
+    <sector>Sector 2</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">46</distancia>
+    <punto_final>
+      <longitud>-97.624583</longitud>
+      <latitud>30.139477</latitud>
+      <altitud>161</altitud>
+    </punto_final>
+    <sector>Sector 2</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">450</distancia>
+    <punto_final>
+      <longitud>-97.628549</longitud>
+      <latitud>30.138461</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 2</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">313</distancia>
+    <punto_final>
+      <longitud>-97.631374</longitud>
+      <latitud>30.137942</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 2</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">509</distancia>
+    <punto_final>
+      <longitud>-97.636622</longitud>
+      <latitud>30.137354</latitud>
+      <altitud>163</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">229</distancia>
+    <punto_final>
+      <longitud>-97.635408</longitud>
+      <latitud>30.135704</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">29</distancia>
+    <punto_final>
+      <longitud>-97.635651</longitud>
+      <latitud>30.135484</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">116</distancia>
+    <punto_final>
+      <longitud>-97.636443</longitud>
+      <latitud>30.135592</latitud>
+      <altitud>161</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">74</distancia>
+    <punto_final>
+      <longitud>-97.636766</longitud>
+      <latitud>30.136246</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">50</distancia>
+    <punto_final>
+      <longitud>-97.637172</longitud>
+      <latitud>30.136587</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">33</distancia>
+    <punto_final>
+      <longitud>-97.637771</longitud>
+      <latitud>30.136561</latitud>
+      <altitud>163</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">78</distancia>
+    <punto_final>
+      <longitud>-97.637473</longitud>
+      <latitud>30.135872</latitud>
+      <altitud>165</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">115</distancia>
+    <punto_final>
+      <longitud>-97.636744</longitud>
+      <latitud>30.134812</latitud>
+      <altitud>165</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">97</distancia>
+    <punto_final>
+      <longitud>-97.637064</longitud>
+      <latitud>30.134005</latitud>
+      <altitud>164</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">119</distancia>
+    <punto_final>
+      <longitud>-97.638021</longitud>
+      <latitud>30.133655</latitud>
+      <altitud>163</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">147</distancia>
+    <punto_final>
+      <longitud>-97.639124</longitud>
+      <latitud>30.133857</latitud>
+      <altitud>162</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">199</distancia>
+    <punto_final>
+      <longitud>-97.640576</longitud>
+      <latitud>30.135517</latitud>
+      <altitud>161</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">377</distancia>
+    <punto_final>
+      <longitud>-97.643507</longitud>
+      <latitud>30.134571</latitud>
+      <altitud>159</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">65</distancia>
+    <punto_final>
+      <longitud>-97.643261</longitud>
+      <latitud>30.134209</latitud>
+      <altitud>159</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+  <tramo>
+    <distancia unidades="m">413</distancia>
+    <punto_final>
+      <longitud>-97.639860</longitud>
+      <latitud>30.131938</latitud>
+      <altitud>158</altitud>
+    </punto_final>
+    <sector>Sector 3</sector>
+  </tramo>
+</tramos>
+  
+    <resultado>
+      <vencedor>Francesco Bagnaia (Ducati)</vencedor>
+      <tiempo>39'00.191</tiempo>
+    </resultado>
+  
+    <clasificados_mundial>
+      <piloto posicion="1">Álex Márquez</piloto>
+      <piloto posicion="2">Marc Márquez</piloto>
+      <piloto posicion="3">Francesco Bagnaia</piloto>
+    </clasificados_mundial>
+  </circuito>
+  

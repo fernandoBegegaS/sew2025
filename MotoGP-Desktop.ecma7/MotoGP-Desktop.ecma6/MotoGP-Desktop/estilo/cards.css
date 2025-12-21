@@ -1,0 +1,49 @@
+/* UO295286 - Fernando Begega Suárez */
+/* Estilos generales de las cartas del proyecto MotoGP-Desktop*/
+
+/* Especificidad: 0,0,2 */
+main article {
+    height: 20em;
+    position: relative;
+    transform: scale(1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .5s;
+    box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,.3);
+}
+
+/* Especificidad: 0,1,2 */
+main article[data-estado=volteada] {
+    transform: rotateY(180deg);
+}
+/* Especificidad: 0,1,2 */
+main article[data-estado=revelada] {
+    transform: rotateY(180deg);
+}
+
+/* Especificidad: 0,0,2 */
+/* Especificidad: 0,0,2 */
+article h3,
+article img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 0.5em;
+    background: #A2CDF1;  /* W3C (fondo sin color): el texto (h3) hereda color desde body/main (negro por defecto); contraste comprobado sobre #A2CDF1 y sin efectos laterales no deseados. En img no aplica color de texto */
+    backface-visibility: hidden;
+    border: 0.17em solid #000; 
+}
+
+/* Especificidad: 0,0,2 */
+article h3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0rem;
+}
+
+/* Especificidad: 0,0,2 */
+article img {
+    transform: rotateY(180deg);
+}

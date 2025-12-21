@@ -1,0 +1,216 @@
+/* UO295286 - Fernando Begega Suárez */
+/* MotoGP-Desktop — estilo base (colores, tipografía y componentes) */
+
+/* Especificidad: 0,0,1 */
+body {
+    font-family: "Arial", "Arial Narrow", "Arial Rounded MT Bold", "Century Gothic", "Calibri", sans-serif;
+    background-color: #dadada;
+    color: #000000;
+    font-size: 1.1rem;
+}
+
+/* Especificidad: 0,0,1 */
+header {
+    background-color: #B30000;
+    color: #ffffff;
+    width: 100%;
+    padding: 0.3125rem;
+    box-sizing: border-box;
+}
+
+/* Especificidad: 0,1,1 */
+/* Especificidad: 0,1,1 */
+a:link,
+a:visited {
+    color: #000000; /* W3C (color sin fondo): el fondo es transparente y se muestra el background del contenedor (p. ej. body/section/article); contraste comprobado y sin efectos laterales no deseados */
+}
+
+/* Especificidad: 0,0,4 */
+/* Especificidad: 0,0,4 */
+section > h3 + p > a, 
+section > h4 + p > a{
+    font-weight: bold; 
+}
+
+/* Especificidad: 0,0,2 */
+header a {
+    color: #ffffff; /* W3C (color sin fondo): fondo transparente, se muestra background-color del header (#B30000); contraste comprobado y sin efectos laterales no deseados */
+    text-decoration: none;
+}
+/* Especificidad: 0,1,2 */
+/* Especificidad: 0,1,2 */
+header a:link,
+header a:visited {
+    color: #ffffff; /* W3C (color sin fondo): fondo transparente, se muestra background-color del header (#B30000); contraste comprobado y sin efectos laterales no deseados */
+}
+
+
+/* Especificidad: 0,1,2 */
+/* Especificidad: 0,1,2 */
+nav a:hover,
+nav a:focus {
+    text-decoration: underline;
+}
+
+/* Especificidad: 0,1,1 */
+a.active {
+    font-weight: 900;
+    text-decoration: underline;
+}
+
+/* Especificidad: 0,0,3 */
+body > header + p {
+    font-size: 0.90rem;
+}
+
+/* Especificidad: 0,0,1 */
+section {
+    margin: 1rem 0rem;
+    padding: 0.75rem 1rem;
+    background-color: #f0f0f0; /* W3C (fondo sin color): el texto hereda color de body (#000000); contraste comprobado y sin efectos laterales no deseados */
+    border-left: 0.25rem solid #B30000;
+}
+
+/* Especificidad: 0,0,3 */
+main dt::after {
+    content: ":";
+    margin-left: 0.25rem;
+}
+
+/* Especificidad: 0,0,2 */
+main dd {
+    margin: 0rem;
+}
+
+/* Especificidad: 0,0,1 */
+dt {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Especificidad: 0,0,3*/
+main > section > article {
+    margin: 1rem auto;
+    padding: 0.75rem 1rem;
+    border: 0.0625rem solid #ccc;
+    background-color: #fff; /* W3C (fondo sin color): el texto hereda color de body/section (#000000); contraste comprobado y sin efectos laterales no deseados */
+}
+
+/* Especificidad: 0,0,4 */
+main > section > article h4 {
+    margin-bottom: 0.5rem;
+    color: #B30000; /* W3C (color sin fondo): fondo transparente, se muestra background-color del article (#ffffff); contraste comprobado y sin efectos laterales no deseados */
+}
+
+/* Especificidad: 0,0,4 */
+main > section > article a {
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+/* Especificidad: 0,0,4 */
+main > section > p:has(> input) {
+    margin: 0.5rem auto;
+    padding: 0.4rem 0.6rem;
+    background-color: #ffffff; /* W3C (fondo sin color): el texto hereda color de body/section (#000000); contraste comprobado y sin efectos laterales no deseados */
+    border: 0.1rem solid #000000;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+/* Especificidad: 0,1,4 */
+/* Especificidad: 0,1,4 */
+main > section:first-of-type > p > label,
+main > section:first-of-type > p > input {
+    display: block;
+}
+
+/* Especificidad: 0,1,5 */
+body > main > section:first-of-type > p > input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+    box-sizing: border-box;
+}
+
+/* Especificidad: 0,0,2 */
+main > ul {
+    list-style: none;
+    padding-left: 0rem;
+    margin: 1rem 0rem;
+}
+
+/* Especificidad: 0,0,4 */
+main > ul > li + li {
+    margin-top: 0.5rem;
+}
+
+/* Especificidad: 0,1,4 */
+/* Especificidad: 0,1,4 */
+main > ul > li > a:link,
+main > ul > li > a:visited {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    background-color: #ffffff;
+    border: 0.1rem solid #B30000;
+    border-radius: 0.25rem;
+    color: #000000;
+    text-decoration: none;
+}
+
+/* Especificidad: 0,1,4 */
+/* Especificidad: 0,1,4 */
+main > ul > li > a:hover,
+main > ul > li > a:focus {
+    transform: scale(1.005);
+    outline: 0.125rem solid #B30000;
+    border-radius: 0.50rem;
+}
+
+/* Especificidad: 0,0,3 */
+main > section table {
+    border-collapse: separate;
+    border-spacing: 0rem;
+    background-color: #ffffff;
+    color: #111111;
+    border: 0.125rem solid #111111;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: auto;
+}
+
+/* Especificidad: 0,0,4 */
+main > section table caption {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Especificidad: 0,0,4 */
+/* Especificidad: 0,0,4 */
+main > section table th,
+main > section table td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-top: 0.0625rem solid #111111;
+}
+
+/* Especificidad: 0,0,5 */
+main > section table thead th {
+    border-top: 0rem;
+    background-color: #111111;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+
+
+@media (max-width: 768px) {
+
+    /* Especificidad: 0,0,3 */
+    article > h3 + img { /* @media: se redefinen width y max-width para adaptación responsive (propiedades ya definidas fuera de @media) */
+        width: 100%;
+        max-width: 100%;
+    }
+}

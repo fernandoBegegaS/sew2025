@@ -1,0 +1,37 @@
+/* UO295286 - Fernando Begega Suárez */
+/* Estilos de layout de las cartas del proyecto MotoGP-Desktop*/
+
+/* Especificidad: 0,0,1 */
+main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    justify-items: center;
+    align-items: start;
+}
+
+/* Especificidad: 0,0,2 */
+main > h2 {
+    grid-column: 1 / -1;
+    justify-self: center;
+}
+
+/* Especificidad: 0,0,2 */
+main > article {
+    width: 100%;
+}
+
+/* Especificidad: 0,0,3 */
+main h2 + p {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+
+
+@media (max-width: 600px) {
+    /* Especificidad: 0,0,1 */
+    main {
+        grid-template-columns: repeat(2, 1fr); /* @media: se redefine grid-template-columns respecto a la regla base (repeat(4, 1fr))  */
+    }
+}

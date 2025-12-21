@@ -1,0 +1,186 @@
+/* UO295286 - Fernando Begega Suárez */
+/* MotoGP-Desktop — layout (distribución y responsive) */
+
+/* Especificidad: 0,0,1 */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* Especificidad: 0,0,2 */
+header nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Especificidad: 0,0,3 */
+header nav a {
+    padding: .25rem .5rem;
+}
+
+/* Especificidad: 0,0,3 */
+main > h3 ~ section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Especificidad: 0,0,4 */
+main > h2 ~ section > h3 {
+    flex: 1 1 100%;
+}
+
+/* Especificidad: 0,0,4 */
+main > h2 ~ section > article {
+    flex: 1 1 14rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Especificidad: 0,1,4 */
+main > h2 ~ section > article:first-of-type {
+    flex-basis: 100%;
+}
+
+/* Especificidad: 0,0,1 */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Especificidad: 0,0,1 */
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Especificidad: 0,0,1 */
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Especificidad: 0,0,2 */
+article:has(> div) {
+    height: 70vh;
+}
+
+/* Especificidad: 0,0,2 */
+article > div {
+    width: 100%;
+    height: 50vh;
+}
+
+/* Especificidad: 0,0,2 */
+main dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 0.75rem;
+}
+
+
+main > h2 + section > h3 + img {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 40rem;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
+/* Especificidad: 0,0,2 */
+form p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Especificidad: 0,0,4 */
+main form> p > button{
+width: 30rem; 
+max-width: 100%;
+}
+
+/* Especificidad: 0,0,3 */
+form p > input, form p > select, form p > textarea { 
+    width: 30rem;
+     max-width: 100%; 
+    }
+
+@media (max-width: 550px) {
+
+    /* Especificidad: 0,0,1 */
+    header {
+        flex-direction: column;
+        justify-content: flex-start; /* @media: se redefine justify-content respecto a la regla base (responsive) */
+        align-items: stretch;        /* @media: se redefine align-items respecto a la regla base (responsive) */
+        gap: .5rem;                  /* @media: se redefine gap; el validador lo desglosa como row-gap/column-gap (línea 0) */
+    }
+
+    /* Especificidad: 0,0,2 */
+    header nav {
+        flex-direction: column;
+        gap: .25rem; /* @media: se redefine gap; el validador lo desglosa como row-gap/column-gap (línea 0) */
+    }
+
+    /* Especificidad: 0,0,3 */
+    header nav a {
+        width: 100%;
+        padding: .5rem .75rem; /* @media: se redefinen padding-top/right/bottom/left respecto a la regla base */
+    }
+
+    /* Especificidad: 0,0,3 */
+    body > header + p {
+        display: none;
+    }
+
+    /* Especificidad: 0,0,1 */
+    video {
+        width: 100%;
+    }
+
+    /* Especificidad: 0,0,1 */
+    audio {
+        width: 100%;
+    }
+
+    /* Especificidad: 0,0,2 */
+    article > div {
+        height: 40vh; /* @media: se redefine height respecto a la regla base */
+    }
+
+    /* Especificidad: 0,0,2 */
+    article:has(> div) {
+        height: 60vh; /* @media: se redefine height respecto a la regla base */
+    }
+
+    /* Especificidad: 0,0,3 */
+    main > section table {
+        display: block; 
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+}
+
+@media (max-width: 350px) {
+
+    /* Especificidad: 0,0,2 */
+    article > div {
+        height: 28vh; /* @media: se redefine height respecto a la regla base */
+    }
+
+    /* Especificidad: 0,0,2 */
+    main dl {
+        display: block; /* @media: se redefine display respecto a la regla base (de grid a block) */
+    }
+
+    /* Especificidad: 0,0,2 */
+    main dd {
+        margin: 0rem 0rem 1rem 1.5rem;
+    }
+}
