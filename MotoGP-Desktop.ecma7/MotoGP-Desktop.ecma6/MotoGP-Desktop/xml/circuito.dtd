@@ -15,13 +15,13 @@
 <!ELEMENT pais (#PCDATA)>
 <!ELEMENT patrocinador (#PCDATA)>
 
-<!ELEMENT referencias (referencia+)>
+<!ELEMENT referencias (referencia, referencia, referencia, referencia*)>
 <!ELEMENT referencia (#PCDATA)>
 
 <!ELEMENT galeria_fotografias (fotografia+)>
 <!ELEMENT fotografia (#PCDATA)>
 
-<!ELEMENT galeria_videos (video, video?, video?)>
+<!ELEMENT galeria_videos (video+)>
 <!ELEMENT video (#PCDATA)>
 
 <!ELEMENT punto_origen (longitud, latitud, altitud)>
@@ -31,8 +31,10 @@
 
 <!ELEMENT tramos (tramo+)>
 <!ELEMENT tramo (distancia, punto_final, sector)>
+
 <!ELEMENT distancia (#PCDATA)>
 <!ATTLIST distancia unidades (m) #REQUIRED>
+
 <!ELEMENT punto_final (longitud, latitud, altitud)>
 <!ELEMENT sector (#PCDATA)>
 

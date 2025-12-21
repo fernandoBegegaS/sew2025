@@ -1,3 +1,0 @@
-Comprobar por ultimo la parte de los XML
-Y mirar no se que de bind en no se donde
-Revisar si los inputs llevan label
